@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 0,
+  "id": "entitycomposer",
+  "name": "EntityComposer",
+  "version": "${version}",
+  "authors": [
+    "Nelonn"
+  ],
+  "entrypoint": "me.nelonn.entitycomposer.EntityComposerMain",
+  "mixins": [
+    "entitycomposer.mixins.json"
+  ]
+}
