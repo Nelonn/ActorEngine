@@ -12,12 +12,13 @@ import me.nelonn.flint.path.Key;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.level.Level;
-import org.bukkit.craftbukkit.v1_20_R3.entity.CraftEntity;
+import org.bukkit.craftbukkit.entity.CraftEntity;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -91,7 +92,7 @@ public class RootEntity extends Entity implements RootLike, SetRemovedHandler {
     // Paper/Bukkit end
 
     @Override
-    protected void defineSynchedData() {
+    protected void defineSynchedData(@NotNull SynchedEntityData.Builder builder) {
     }
 
     @Override

@@ -6,10 +6,10 @@ plugins {
     id("io.papermc.paperweight.userdev")
 }
 
-java.toolchain.languageVersion.set(JavaLanguageVersion.of(17))
-
 group = rootProject.group
 version = rootProject.version
+
+java.toolchain.languageVersion.set(JavaLanguageVersion.of(21))
 
 repositories {
     mavenCentral()
@@ -23,7 +23,8 @@ dependencies {
     compileOnly("org.spongepowered:mixin:0.8.5")
 }
 
-tasks.named<JavaCompile>("compileJava") {
+tasks.withType<JavaCompile> {
+    options.release.set(21)
     options.encoding = "UTF-8"
 }
 
