@@ -1,5 +1,3 @@
-import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
-
 plugins {
     id("java")
     id("io.papermc.paperweight.userdev")
@@ -16,6 +14,8 @@ repositories {
     maven("https://maven.fabricmc.net/") // Mixin
 }
 
+paperweight.reobfArtifactConfiguration = io.papermc.paperweight.userdev.ReobfArtifactConfiguration.MOJANG_PRODUCTION
+
 dependencies {
     paperweight.paperDevBundle(project.properties["paper_build"].toString())
     compileOnly(fileTree("libs/compile"))
@@ -28,24 +28,26 @@ tasks.withType<JavaCompile> {
     options.encoding = "UTF-8"
 }
 
-tasks.named<Copy>("processResources") {
-    filteringCharset = "UTF-8"
-    filesMatching("coprolite.plugin.json") {
-        expand("version" to version)
+tasks {
+    processResources {
+        filteringCharset = "UTF-8"
+        filesMatching("coprolite.plugin.json") {
+            expand("version" to version)
+        }
     }
-}
 
-tasks.named<ShadowJar>("shadowJar") {
-    archiveClassifier.set("")
-    relocate("me.nelonn.bestvecs", "me.nelonn.entitycomposer.shaded.bestvecs")
-    relocate("me.nelonn.pluginlib", "me.nelonn.entitycomposer.shaded.pluginlib")
-}
+    shadowJar {
+        archiveClassifier.set("")
+        relocate("me.nelonn.bestvecs", "me.nelonn.entitycomposer.shaded.bestvecs")
+        relocate("me.nelonn.pluginlib", "me.nelonn.entitycomposer.shaded.pluginlib")
+    }
 
-tasks.named("assemble").configure {
-    dependsOn("reobfJar")
-    dependsOn("shadowJar")
-}
+    /*reobfJar {
+        remapperArgs.add("--mixin")
+    }*/
 
-tasks.reobfJar {
-    remapperArgs.add("--mixin")
+    assemble {
+        //dependsOn("reobfJar")
+        dependsOn("shadowJar")
+    }
 }
