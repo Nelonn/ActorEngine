@@ -112,11 +112,11 @@ public class Actor {
         root.asEntity().setRemoved(reason);
     }
 
-    public void addComponent(@NotNull AComponent component) {
-        addComponent(component, false);
+    public <T extends AComponent> T addComponent(@NotNull T component) {
+        return addComponent(component, false);
     }
 
-    public void addComponent(@NotNull AComponent component, boolean replace) {
+    public <T extends AComponent> T addComponent(@NotNull T component, boolean replace) {
         String componentName = component.getName();
         if (componentName.equals("actor") || componentName.equals("root") || componentName.equals("this") || componentName.equals("self")) {
             throw new IllegalArgumentException("Component name '" + componentName + "' is illegal");
@@ -125,6 +125,7 @@ public class Actor {
             throw new RuntimeException("Component '" + componentName + "' already exists");
         }
         components.put(componentName, component);
+        return component;
     }
 
     public boolean hasComponent(@NotNull String name) {
