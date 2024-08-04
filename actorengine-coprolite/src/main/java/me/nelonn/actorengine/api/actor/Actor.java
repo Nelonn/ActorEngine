@@ -3,7 +3,6 @@ package me.nelonn.actorengine.api.actor;
 import me.nelonn.actorengine.api.ActorEngine;
 import me.nelonn.actorengine.api.Root;
 import me.nelonn.actorengine.component.AComponent;
-import me.nelonn.actorengine.utility.Utility;
 import me.nelonn.bestvecs.MutVec3d;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.Entity;
@@ -113,22 +112,6 @@ public class Actor {
         root.asEntity().setRemoved(reason);
     }
 
-    public boolean hasAnyComponent(@NotNull String name) {
-        return components.containsKey(name.toLowerCase(Locale.ENGLISH));
-    }
-
-    @SuppressWarnings("unchecked")
-    public <T extends AComponent> boolean hasComponent(@NotNull String name) {
-        AComponent component = components.get(name);
-        if (component == null) return false;
-        try {
-            T test = (T) component;
-            return true;
-        } catch (ClassCastException e) {
-            return false;
-        }
-    }
-
     public void addComponent(@NotNull AComponent component) {
         addComponent(component, false);
     }
@@ -144,41 +127,48 @@ public class Actor {
         components.put(componentName, component);
     }
 
+    public boolean hasComponent(@NotNull String name) {
+        return components.containsKey(name.toLowerCase(Locale.ENGLISH));
+    }
+
+    public <T extends AComponent> boolean hasComponent(@NotNull String name, @NotNull Class<T> type) {
+        AComponent component = components.get(name.toLowerCase(Locale.ENGLISH));
+        return component != null && type.isAssignableFrom(component.getClass());
+    }
+
     public @Nullable AComponent removeComponent(@NotNull String name) {
         return components.remove(name.toLowerCase(Locale.ENGLISH));
     }
 
-    public @Nullable AComponent getAnyComponentNullable(@NotNull String name) {
+    public @Nullable AComponent getComponentNullable(@NotNull String name) {
         return components.get(name.toLowerCase(Locale.ENGLISH));
     }
 
-    public @NotNull AComponent getAnyComponent(@NotNull String name) {
-        AComponent component = getAnyComponentNullable(name);
+    public <T extends AComponent> @Nullable T getComponentNullable(@NotNull String name, @NotNull Class<T> type) {
+        AComponent component = components.get(name.toLowerCase(Locale.ENGLISH));
+        if (component == null || !type.isAssignableFrom(component.getClass())) return null;
+        return type.cast(component);
+    }
+
+    public @NotNull AComponent getComponent(@NotNull String name) {
+        name = name.toLowerCase(Locale.ENGLISH);
+        AComponent component = components.get(name);
         if (component == null) {
             throw new RuntimeException("Component '" + name + "' not found");
         }
         return component;
     }
 
-    @SuppressWarnings("unchecked")
-    public <T extends AComponent> @NotNull T getComponent(@NotNull String name) {
+    public <T extends AComponent> @NotNull T getComponent(@NotNull String name, @NotNull Class<T> type) {
         name = name.toLowerCase(Locale.ENGLISH);
         AComponent component = components.get(name);
         if (component == null) {
             throw new RuntimeException("Component '" + name + "' not found");
         }
-        try {
-            return (T) component;
-        } catch (ClassCastException e) {
-            throw new RuntimeException("Component '" + name + "' is not what was expected: " + e.toString(), e);
+        if (type.isAssignableFrom(component.getClass())) {
+            throw new RuntimeException("Component '" + name + "' is not what was expected, expected '" + type.getTypeName() + "', got '" + component.getClass().getTypeName() + "'");
         }
-    }
-
-    public <T extends AComponent> @Nullable T getComponentNullable(@NotNull String name) {
-        name = name.toLowerCase(Locale.ENGLISH);
-        AComponent component = components.get(name);
-        if (component == null) return null;
-        return Utility.safeCast(component);
+        return type.cast(component);
     }
 
     public @NotNull Collection<AComponent> getAllComponents() {
