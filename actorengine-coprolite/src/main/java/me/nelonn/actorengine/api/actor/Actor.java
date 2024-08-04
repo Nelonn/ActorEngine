@@ -168,7 +168,7 @@ public class Actor {
         if (component == null) {
             throw new RuntimeException("Component '" + name + "' not found");
         }
-        if (type.isAssignableFrom(component.getClass())) {
+        if (!type.isAssignableFrom(component.getClass())) {
             throw new RuntimeException("Component '" + name + "' is not what was expected, expected '" + type.getTypeName() + "', got '" + component.getClass().getTypeName() + "'");
         }
         return type.cast(component);
