@@ -1,10 +1,9 @@
 package me.nelonn.actorengine.api.actor;
 
 import me.nelonn.actorengine.api.ActorEngine;
-import me.nelonn.actorengine.component.AComponent;
-import me.nelonn.actorengine.utility.Utility;
-import me.nelonn.bestvecs.MutVec3d;
 import me.nelonn.actorengine.api.Root;
+import me.nelonn.actorengine.component.AComponent;
+import me.nelonn.bestvecs.MutVec3d;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
@@ -113,10 +112,33 @@ public class Actor {
         root.asEntity().setRemoved(reason);
     }
 
+    public boolean hasAnyComponent(@NotNull String name) {
+        return components.containsKey(name.toLowerCase(Locale.ENGLISH));
+    }
+
+    @SuppressWarnings("unchecked")
+    public <T extends AComponent> boolean hasComponent(@NotNull String name) {
+        AComponent component = components.get(name);
+        if (component == null) return false;
+        try {
+            T test = (T) component;
+            return true;
+        } catch (ClassCastException e) {
+            return false;
+        }
+    }
+
     public void addComponent(@NotNull AComponent component) {
+        addComponent(component, false);
+    }
+
+    public void addComponent(@NotNull AComponent component, boolean replace) {
         String componentName = component.getName();
-        if (componentName.equals("root") || componentName.equals("this") || componentName.equals("self")) {
-            throw new IllegalArgumentException("You cannot add component with name '" + componentName + "'");
+        if (componentName.equals("actor") || componentName.equals("root") || componentName.equals("this") || componentName.equals("self")) {
+            throw new IllegalArgumentException("Component name '" + componentName + "' is illegal");
+        }
+        if (components.containsKey(componentName) && !replace) {
+            throw new RuntimeException("Component '" + componentName + "' already exists");
         }
         components.put(componentName, component);
     }
@@ -125,12 +147,27 @@ public class Actor {
         return components.remove(name.toLowerCase(Locale.ENGLISH));
     }
 
-    public @Nullable AComponent getComponent(@NotNull String name) {
-        return components.get(name.toLowerCase(Locale.ENGLISH));
+    public @NotNull AComponent getAnyComponent(@NotNull String name) {
+        name = name.toLowerCase(Locale.ENGLISH);
+        AComponent component = components.get(name);
+        if (component == null) {
+            throw new RuntimeException("Component '" + name + "' not found");
+        }
+        return component;
     }
 
-    public <T extends AComponent> @Nullable T getTypedComponent(@NotNull String name) {
-        return Utility.safeCast(getComponent(name));
+    @SuppressWarnings("unchecked")
+    public <T extends AComponent> @NotNull T getComponent(@NotNull String name) {
+        name = name.toLowerCase(Locale.ENGLISH);
+        AComponent component = components.get(name);
+        if (component == null) {
+            throw new RuntimeException("Component '" + name + "' not found");
+        }
+        try {
+            return (T) component;
+        } catch (ClassCastException e) {
+            throw new RuntimeException("Component '" + name + "' is not what was expected: " + e.toString(), e);
+        }
     }
 
     public @NotNull Collection<AComponent> getAllComponents() {
