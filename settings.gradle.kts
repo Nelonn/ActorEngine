@@ -1,2 +1,2 @@
-rootProject.name = "EntityComposer"
-include("entitycomposer-coprolite")
+rootProject.name = "ActorEngine"
+include("actorengine-coprolite")

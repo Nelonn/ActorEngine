@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 0,
+  "id": "actorengine",
+  "name": "ActorEngine",
+  "version": "${version}",
+  "authors": [
+    "Nelonn"
+  ],
+  "entrypoint": "me.nelonn.actorengine.ActorEngineMain",
+  "mixins": [
+    "actorengine.mixins.json"
+  ]
+}
