@@ -3,6 +3,7 @@ package me.nelonn.actorengine.api.actor;
 import me.nelonn.actorengine.api.ActorEngine;
 import me.nelonn.actorengine.api.Root;
 import me.nelonn.actorengine.component.AComponent;
+import me.nelonn.actorengine.utility.Utility;
 import me.nelonn.bestvecs.MutVec3d;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.Entity;
@@ -147,9 +148,12 @@ public class Actor {
         return components.remove(name.toLowerCase(Locale.ENGLISH));
     }
 
+    public @Nullable AComponent getAnyComponentNullable(@NotNull String name) {
+        return components.get(name.toLowerCase(Locale.ENGLISH));
+    }
+
     public @NotNull AComponent getAnyComponent(@NotNull String name) {
-        name = name.toLowerCase(Locale.ENGLISH);
-        AComponent component = components.get(name);
+        AComponent component = getAnyComponentNullable(name);
         if (component == null) {
             throw new RuntimeException("Component '" + name + "' not found");
         }
@@ -168,6 +172,13 @@ public class Actor {
         } catch (ClassCastException e) {
             throw new RuntimeException("Component '" + name + "' is not what was expected: " + e.toString(), e);
         }
+    }
+
+    public <T extends AComponent> @Nullable T getComponentNullable(@NotNull String name) {
+        name = name.toLowerCase(Locale.ENGLISH);
+        AComponent component = components.get(name);
+        if (component == null) return null;
+        return Utility.safeCast(component);
     }
 
     public @NotNull Collection<AComponent> getAllComponents() {
