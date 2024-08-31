@@ -13,6 +13,7 @@ import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.OverridingMethodsMustInvokeSuper;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Actor {
     private final ActorType<?> type;
@@ -172,6 +173,13 @@ public class Actor {
             throw new RuntimeException("Component '" + name + "' is not what was expected, expected '" + type.getTypeName() + "', got '" + component.getClass().getTypeName() + "'");
         }
         return type.cast(component);
+    }
+
+    public <T> @NotNull Collection<T> getComponents(@NotNull Class<T> type) {
+        return getAllComponents().stream()
+                .filter(component -> type.isAssignableFrom(component.getClass()))
+                .map(type::cast)
+                .toList();
     }
 
     public @NotNull Collection<AComponent> getAllComponents() {

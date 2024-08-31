@@ -33,7 +33,7 @@ public class RootEntity extends Entity implements RootLike, SetRemovedHandler {
     private Actor actor;
     private EntityDimensions dimensions = EntityDimensions.scalable(0.0F, 0.0F);
     private boolean shouldBeSaved = true;
-    private CompoundTag nbt;
+    private CompoundTag savedNbt;
     private final RootDelegate root;
 
     public RootEntity(EntityType<?> type, Level world) {
@@ -111,8 +111,8 @@ public class RootEntity extends Entity implements RootLike, SetRemovedHandler {
     @Override
     protected void addAdditionalSaveData(@NotNull CompoundTag nbt) {
         if (this.actor == null) {
-            if (this.nbt != null) {
-                nbt.merge(this.nbt);
+            if (this.savedNbt != null) {
+                nbt.merge(this.savedNbt);
             }
             return;
         }
@@ -144,13 +144,14 @@ public class RootEntity extends Entity implements RootLike, SetRemovedHandler {
                     actorEngine.getLogger().debug(String.format("Removed actor with non existent type '%s' [x=%.2f, y=%.2f, z=%.2f]", typeId, getX(), getY(), getZ()));
                     setRemoved(RemovalReason.DISCARDED);
                 } else {
-                    this.nbt = nbt;
+                    this.savedNbt = nbt;
                 }
                 return;
             }
             this.actor = actorType.create(asRoot());
             this.actor.assemble(nbt.getCompound(ActorEngine.ID + ".ActorData"));
         } catch (Throwable e) {
+            savedNbt = nbt;
             actorEngine.getLogger().warn(String.format("Failed to load '%s' [x=%.2f, y=%.2f, z=%.2f]", getEncodeId(), getX(), getY(), getZ()), e);
         }
     }
