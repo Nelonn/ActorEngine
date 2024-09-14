@@ -5,6 +5,7 @@ import me.nelonn.actorengine.api.Root;
 import me.nelonn.actorengine.api.actor.Actor;
 import me.nelonn.actorengine.api.actor.ActorType;
 import me.nelonn.actorengine.component.AComponent;
+import me.nelonn.actorengine.component.SaveLoadComponent;
 import me.nelonn.actorengine.component.TangibleComponent;
 import me.nelonn.actorengine.torefactor.animation.Animation;
 import me.nelonn.actorengine.torefactor.animation.AnimationType;
@@ -15,6 +16,8 @@ import me.nelonn.actorengine.torefactor.variable.FlexibleVariablesMap;
 import me.nelonn.actorengine.torefactor.variable.VariableKey;
 import me.nelonn.actorengine.torefactor.variable.VariablesMap;
 import me.nelonn.bestvecs.ImmVec3d;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
@@ -81,6 +84,56 @@ public abstract class AActor extends Actor {
                 }
             } catch (Throwable e) {
                 ActorEngine.get().getLogger().error("Unable to move component", e);
+            }
+        }
+    }
+
+    private static final String COMPONENTS_DATA = "ComponentsData";
+
+    @Override
+    public void save(@NotNull CompoundTag nbt) {
+        super.save(nbt);
+
+        Collection<SaveLoadComponent> toSave = getComponents(SaveLoadComponent.class);
+        if (toSave.isEmpty()) return;
+
+        CompoundTag componentsData;
+        if (nbt.contains(COMPONENTS_DATA)) { // super.save(nbt); can be called after main save
+            componentsData = nbt.getCompound(COMPONENTS_DATA);
+        } else {
+            componentsData = new CompoundTag();
+            nbt.put(COMPONENTS_DATA, componentsData);
+        }
+
+        for (SaveLoadComponent component : toSave) {
+            String name = ((AComponent) component).getName();
+            Tag tag;
+            try {
+                tag = component.save();
+            } catch (Throwable e) {
+                getRoot().getActorEngine().getLogger().error("Unable to save component '{}'", name, e);
+                continue;
+            }
+            if (tag == null) continue;
+            componentsData.put(name, tag);
+        }
+    }
+
+    @Override
+    public void load(@NotNull CompoundTag nbt) {
+        super.load(nbt);
+
+        if (!nbt.contains(COMPONENTS_DATA)) return;
+        CompoundTag componentsData = nbt.getCompound(COMPONENTS_DATA);
+
+        for (SaveLoadComponent component : getComponents(SaveLoadComponent.class)) {
+            String name = ((AComponent) component).getName();
+            if (!componentsData.contains(name)) continue;
+            Tag data = componentsData.get(name);
+            try {
+                component.load(data);
+            } catch (Throwable e) {
+                getRoot().getActorEngine().getLogger().error("Unable to load component '{}'", name, e);
             }
         }
     }

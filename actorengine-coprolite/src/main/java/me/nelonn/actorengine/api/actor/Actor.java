@@ -13,7 +13,6 @@ import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.OverridingMethodsMustInvokeSuper;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class Actor {
     private final ActorType<?> type;
