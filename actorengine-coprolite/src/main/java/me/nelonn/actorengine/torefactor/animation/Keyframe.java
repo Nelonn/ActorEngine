@@ -11,7 +11,7 @@ import java.util.Map;
 import static java.util.Objects.requireNonNull;
 
 public class Keyframe {
-    public static Keyframe zero(@NotNull String boneName, double time, @NotNull Property<?> property) {
+    public static Keyframe zero(String boneName, double time, Property<?> property) {
         Keyframe result = new Keyframe(time);
         FutureBoneTransform futureBoneTransform = new FutureBoneTransform();
         futureBoneTransform.add(FuturePropertyTransform.zero(property));
@@ -30,19 +30,19 @@ public class Keyframe {
         return time;
     }
 
-    public boolean shouldAffectBone(@NotNull String name) {
+    public boolean shouldAffectBone(String name) {
         return boneTransforms.containsKey(name);
     }
 
-    public boolean shouldAffectBoneProperty(@NotNull String boneName, @NotNull Property<?> property) {
+    public boolean shouldAffectBoneProperty(String boneName, Property<?> property) {
         return getBoneTransform(boneName).affects().contains(property);
     }
 
-    public @NotNull FutureBoneTransform getBoneTransform(@NotNull String boneName) {
+    public FutureBoneTransform getBoneTransform(String boneName) {
         return requireNonNull(boneTransforms.get(boneName), boneName);
     }
 
-    public @NotNull Map<String, FutureBoneTransform> getBoneTransforms() {
+    public Map<String, FutureBoneTransform> getBoneTransforms() {
         return boneTransforms;
     }
 }

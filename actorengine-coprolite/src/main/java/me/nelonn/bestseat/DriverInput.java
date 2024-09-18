@@ -2,7 +2,7 @@ package me.nelonn.bestseat;
 
 import net.minecraft.world.entity.LivingEntity;
 import org.jetbrains.annotations.Contract;
-import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
 
@@ -14,14 +14,14 @@ public class DriverInput {
     private final boolean up;
     private final boolean down;
 
-    public DriverInput(@NotNull DriverInput.Direction forward, @NotNull DriverInput.Direction side, boolean up, boolean down) {
+    public DriverInput(DriverInput.Direction forward, DriverInput.Direction side, boolean up, boolean down) {
         this.forward = forward;
         this.side = side;
         this.up = up;
         this.down = down;
     }
 
-    public @NotNull DriverInput.Direction getForward() {
+    public DriverInput.Direction getForward() {
         return forward;
     }
 
@@ -33,7 +33,7 @@ public class DriverInput {
         return getForward() == Direction.NEGATIVE;
     }
 
-    public @NotNull DriverInput.Direction getSide() {
+    public DriverInput.Direction getSide() {
         return side;
     }
 
@@ -76,7 +76,7 @@ public class DriverInput {
     }
 
     @Contract("null, _ -> null; !null, _ -> !null")
-    public static DriverInput obtain(LivingEntity livingEntity, boolean down) {
+    public static @Nullable DriverInput obtain(@Nullable LivingEntity livingEntity, boolean down) {
         if (livingEntity == null) return null;
         DriverInput.Direction forward = -livingEntity.zza > 0 ? DriverInput.Direction.NEGATIVE :
                 -livingEntity.zza < 0 ? DriverInput.Direction.POSITIVE :

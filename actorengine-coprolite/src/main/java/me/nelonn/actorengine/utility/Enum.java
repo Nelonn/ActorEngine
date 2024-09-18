@@ -16,7 +16,7 @@ public class Enum<T> {
     private final Map<T, Entry> entries;
     private final Set<T> values;
 
-    public Enum(@NotNull Class<T> type) {
+    public Enum(Class<T> type) {
         this.type = type;
         int ordinal = 0;
         ImmutableMap.Builder<T, Entry> builder = new ImmutableMap.Builder<>();
@@ -35,11 +35,11 @@ public class Enum<T> {
         values = Collections.unmodifiableSet(entries.keySet());
     }
 
-    public @NotNull String name(@NotNull T instance) {
+    public String name(T instance) {
         return entries.get(instance).name();
     }
 
-    public int ordinal(@NotNull T instance) {
+    public int ordinal(T instance) {
         return entries.get(instance).ordinal();
     }
 
@@ -50,7 +50,7 @@ public class Enum<T> {
     public static class Entry {
         private final String name;
 
-        @NotNull
+        
         public final String name() {
             return name;
         }

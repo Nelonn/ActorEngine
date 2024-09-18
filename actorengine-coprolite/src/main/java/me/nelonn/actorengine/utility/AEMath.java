@@ -44,7 +44,7 @@ public final class AEMath {
         return new MutVec3d(f5 * f6, -f7, f4 * f6);
     }
 
-    public static @NotNull MutVec3d rotateVector(@NotNull Vec3d coordinates, @NotNull Quaternionf quaternion) {
+    public static MutVec3d rotateVector(Vec3d coordinates, Quaternionf quaternion) {
         MutVec3d coords = coordinates instanceof MutVec3d mutVec3d ? mutVec3d : coordinates.mutableCopy();
         Vector3d vec = new Vector3d(coords.x(), coords.y(), coords.z());
         quaternion.transform(vec);

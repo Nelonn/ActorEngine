@@ -10,13 +10,13 @@ import java.util.Objects;
 public interface ActorEngine {
     String ID = "actorengine";
 
-    static @NotNull ActorEngine get() {
+    static ActorEngine get() {
         return (ActorEngine) Objects.requireNonNull(CoproliteLoader.getInstance().getObjectShare().get(ID + ":core"), "ObjectShare: " + ID + ":core");
     }
 
-    @NotNull ActorRegistry actors();
+    ActorRegistry actors();
 
     boolean isRemoveActorsOfANonexistentType();
 
-    @NotNull Logger getLogger();
+    Logger getLogger();
 }

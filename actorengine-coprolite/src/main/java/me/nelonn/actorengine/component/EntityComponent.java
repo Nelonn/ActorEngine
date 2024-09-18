@@ -6,7 +6,6 @@ import me.nelonn.actorengine.torefactor.transform.Transform;
 import me.nelonn.bestvecs.ImmVec3d;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Set;
 
@@ -14,7 +13,7 @@ public class EntityComponent extends TangibleComponent {
     public static final Set<Property<?>> PROPERTIES = Set.of(Property.POSITION, Property.ROTATION);
     private final Entity entity;
 
-    public EntityComponent(@NotNull AActor actor, @NotNull String name, @NotNull Entity entity, boolean addToWorld) {
+    public EntityComponent(AActor actor, String name, Entity entity, boolean addToWorld) {
         super(actor, name);
         this.entity = entity;
         if (addToWorld) {
@@ -22,7 +21,7 @@ public class EntityComponent extends TangibleComponent {
         }
     }
 
-    public EntityComponent(@NotNull AActor actor, @NotNull String name, @NotNull Entity entity) {
+    public EntityComponent(AActor actor, String name, Entity entity) {
         this(actor, name, entity, true);
     }
 
@@ -37,11 +36,12 @@ public class EntityComponent extends TangibleComponent {
 
     @Override
     public void destroy() {
+        super.destroy();
         entity.discard();
     }
 
     @Override
-    public void applyTransforms(@NotNull Level world, @NotNull ImmVec3d rootPos, @NotNull Transform transform) {
+    public void applyTransforms(Level world, ImmVec3d rootPos, Transform transform) {
         if (!entity.level().equals(world)) {
             entity.setLevel(world);
         }
@@ -49,17 +49,17 @@ public class EntityComponent extends TangibleComponent {
     }
 
     @Override
-    public void compose(@NotNull Level world, @NotNull ImmVec3d rootPos, @NotNull Transform transform) {
+    public void compose(Level world, ImmVec3d rootPos, Transform transform) {
         super.compose(world, rootPos, transform);
     }
 
-    @NotNull
+    
     public Entity getEntity() {
         return entity;
     }
 
     @Override
-    public @NotNull Set<Property<?>> getSupportedProperties() {
+    public Set<Property<?>> getSupportedProperties() {
         return PROPERTIES;
     }
 }

@@ -33,20 +33,20 @@ public class ModelDisplayComponent extends EntityComponent {
         private Item item;
         private Path model;
 
-        public ModelBuilder(@NotNull Item item) {
+        public ModelBuilder(Item item) {
             this.item = item;
         }
 
-        public ModelBuilder(@NotNull Key itemId) {
+        public ModelBuilder(Key itemId) {
             this(BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath(itemId.namespace(), itemId.value())));
         }
 
-        public @NotNull ModelBuilder model(Path model) {
+        public ModelBuilder model(Path model) {
             this.model = model;
             return this;
         }
 
-        public @NotNull ItemStack build() {
+        public ItemStack build() {
             ItemStack itemStack = new ItemStack(item);
             CustomData.update(DataComponents.CUSTOM_DATA, itemStack, nbt -> {
                 nbt.putString("CustomModel", model.toString());
@@ -61,7 +61,7 @@ public class ModelDisplayComponent extends EntityComponent {
     private Vec3f scale;
     private Vec3f translation;
 
-    public ModelDisplayComponent(@NotNull AActor actor, @NotNull String name, @Nullable ItemStack itemStack, @Nullable ItemDisplayContext itemTransform, @Nullable FutureRotation rotation, @Nullable FutureDisplayRotation displayLeftRotation) {
+    public ModelDisplayComponent(AActor actor, String name, @Nullable ItemStack itemStack, @Nullable ItemDisplayContext itemTransform, @Nullable FutureRotation rotation, @Nullable FutureDisplayRotation displayLeftRotation) {
         super(actor, name, new ModelDisplay(actor.getRoot().asEntity().level()));
         ModelDisplay display = getEntity();
         display.setActor(actor);
@@ -75,7 +75,7 @@ public class ModelDisplayComponent extends EntityComponent {
     }
 
     @Override
-    public @NotNull ModelDisplay getEntity() {
+    public ModelDisplay getEntity() {
         return (ModelDisplay) super.getEntity();
     }
 
@@ -95,7 +95,7 @@ public class ModelDisplayComponent extends EntityComponent {
         getEntity().setYHeadRot(yaw);
     }
 
-    public void rotateTo(@NotNull Rotation2d rotation) {
+    public void rotateTo(Rotation2d rotation) {
         this.rotateTo((float) Math.toDegrees(rotation.pitch()), (float) Math.toDegrees(rotation.yaw()));
     }
 
@@ -108,7 +108,7 @@ public class ModelDisplayComponent extends EntityComponent {
     }
 
     @Override
-    public void applyTransforms(@NotNull Level world, @NotNull ImmVec3d rootPos, @NotNull Transform transform) {
+    public void applyTransforms(Level world, ImmVec3d rootPos, Transform transform) {
         super.applyTransforms(world, rootPos, transform);
 
         Rotation2d rotation = transform.get(Property.ROTATION);
@@ -127,7 +127,7 @@ public class ModelDisplayComponent extends EntityComponent {
     }
 
     @Override
-    public @NotNull Transform baseTransform() {
+    public Transform baseTransform() {
         Transform transform = super.baseTransform();
         if (rotation != null) {
             transform.set(Property.ROTATION, rotation.apply(getActor().getVariables()));
@@ -145,7 +145,7 @@ public class ModelDisplayComponent extends EntityComponent {
     }
 
     @Override
-    public @NotNull Set<Property<?>> getSupportedProperties() {
+    public Set<Property<?>> getSupportedProperties() {
         return SUPPORTED_PROPERTIES;
     }
 }

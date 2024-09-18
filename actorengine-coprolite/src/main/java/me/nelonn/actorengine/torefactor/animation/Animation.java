@@ -13,29 +13,29 @@ public abstract class Animation {
     private final Actor actor;
     private final VariablesMap variables;
 
-    public Animation(@NotNull AnimationType<?> type, @NotNull AActor actor, @NotNull VariablesMap variables) {
+    public Animation(AnimationType<?> type, AActor actor, VariablesMap variables) {
         this.type = type;
         this.actor = actor;
         this.variables = variables;
     }
 
-    public @NotNull AnimationType<?> getType() {
+    public AnimationType<?> getType() {
         return type;
     }
 
-    public @NotNull Actor getActor() {
+    public Actor getActor() {
         return actor;
     }
 
-    public @NotNull VariablesMap getVariables() {
+    public VariablesMap getVariables() {
         return variables;
     }
 
     public abstract boolean isRunning();
 
-    public abstract @Nullable Transform animate(@NotNull AComponent bone);
+    public abstract @Nullable Transform animate(AComponent bone);
 
-    public boolean isSame(@NotNull Animation other) {
+    public boolean isSame(Animation other) {
         return this.getType().equals(other.getType());
     }
 }

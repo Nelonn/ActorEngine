@@ -12,27 +12,27 @@ import org.jetbrains.annotations.Nullable;
 public class RootDelegate implements Root {
     private final RootEntity handle;
 
-    public RootDelegate(@NotNull RootEntity handle) {
+    public RootDelegate(RootEntity handle) {
         this.handle = handle;
     }
 
     @Override
-    public @NotNull Entity asEntity() {
+    public Entity asEntity() {
         return handle;
     }
 
     @Override
-    public @NotNull ActorEngine getActorEngine() {
+    public ActorEngine getActorEngine() {
         return handle.getActorEngine();
     }
 
     @Override
-    public @NotNull Level level() {
+    public Level level() {
         return handle.level();
     }
 
     @Override
-    public @NotNull MutVec3d position() {
+    public MutVec3d position() {
         return new MutVec3d(handle.getX(), handle.getY(), handle.getZ());
     }
 

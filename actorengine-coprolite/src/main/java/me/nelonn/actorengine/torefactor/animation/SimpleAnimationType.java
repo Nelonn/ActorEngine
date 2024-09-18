@@ -7,17 +7,17 @@ import org.jetbrains.annotations.NotNull;
 public class SimpleAnimationType<T extends Animation> implements AnimationType<T> {
     private final Constructor<T> constructor;
 
-    public SimpleAnimationType(@NotNull Constructor<T> constructor) {
+    public SimpleAnimationType(Constructor<T> constructor) {
         this.constructor = constructor;
     }
 
     @Override
-    public @NotNull T create(@NotNull AActor actor, @NotNull VariablesMap properties) {
+    public T create(AActor actor, VariablesMap properties) {
         return constructor.create(this, actor, properties);
     }
 
     @FunctionalInterface
     public interface Constructor<T extends Animation> {
-        @NotNull T create(@NotNull AnimationType<T> type, @NotNull AActor actor, @NotNull VariablesMap properties);
+        T create(AnimationType<T> type, AActor actor, VariablesMap properties);
     }
 }

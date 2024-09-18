@@ -13,7 +13,7 @@ public class CraftRoot extends CraftEntity implements RootLike {
     }
 
     @Override
-    public @NotNull Root asRoot() {
+    public Root asRoot() {
         return ((RootLike) super.getHandle()).asRoot();
     }
 }

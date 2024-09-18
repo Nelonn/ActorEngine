@@ -8,25 +8,24 @@ import me.nelonn.bestvecs.ImmVec3d;
 import me.nelonn.bestvecs.MutVec3d;
 import me.nelonn.bestvecs.Vec3d;
 import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public abstract class TangibleComponent extends AComponent {
-    private RelativePosition position;
+    @Nullable private RelativePosition position;
 
-    public TangibleComponent(@NotNull AActor actor, @NotNull String name) {
+    public TangibleComponent(AActor actor, String name) {
         super(actor, name);
     }
 
     public abstract void moveTo(double x, double y, double z);
 
-    public void compose(@NotNull Level world, @NotNull ImmVec3d rootPos, @NotNull Transform transform) {
+    public void compose(Level world, ImmVec3d rootPos, Transform transform) {
         Transform baseTransform = this.baseTransform();
         baseTransform.add(transform);
         applyTransforms(world, rootPos, baseTransform);
     }
 
-    public void applyTransforms(@NotNull Level world, @NotNull ImmVec3d rootPos, @NotNull Transform transform) {
+    public void applyTransforms(Level world, ImmVec3d rootPos, Transform transform) {
         MutVec3d pos = rootPos.mutableCopy();
         Vec3d transformPosition = transform.get(Property.POSITION);
         if (transformPosition != null) {
@@ -35,7 +34,7 @@ public abstract class TangibleComponent extends AComponent {
         moveTo(pos.x(), pos.y(), pos.z());
     }
 
-    public @NotNull Transform baseTransform() {
+    public Transform baseTransform() {
         Transform transform = new Transform();
         if (position == null) return transform;
         Vec3d positionVec = position.apply(getActor().getVariables());

@@ -3,11 +3,10 @@ package me.nelonn.actorengine.torefactor.transform;
 import me.nelonn.actorengine.torefactor.rotation.Rotation3d;
 import me.nelonn.actorengine.torefactor.variable.VariableKey;
 import me.nelonn.actorengine.torefactor.variable.VariablesMap;
+import me.nelonn.actorengine.utility.AEMath;
 import me.nelonn.bestvecs.ImmVec3d;
 import me.nelonn.bestvecs.MutVec3d;
 import me.nelonn.bestvecs.Vec3d;
-import me.nelonn.actorengine.utility.AEMath;
-import org.jetbrains.annotations.NotNull;
 import org.joml.Quaternionf;
 
 public class HardOrientedPosition implements RelativePosition {
@@ -17,7 +16,7 @@ public class HardOrientedPosition implements RelativePosition {
     private final boolean useYaw;
     private final ImmVec3d coordinates;
 
-    public HardOrientedPosition(@NotNull String source, boolean useRoll, boolean usePitch, boolean useYaw, @NotNull Vec3d coordinates) {
+    public HardOrientedPosition(String source, boolean useRoll, boolean usePitch, boolean useYaw, Vec3d coordinates) {
         this.source = new VariableKey<>(source, Rotation3d.class, Rotation3d.ZERO);
         this.useRoll = useRoll;
         this.usePitch = usePitch;
@@ -25,12 +24,10 @@ public class HardOrientedPosition implements RelativePosition {
         this.coordinates = coordinates.toImmutable();
     }
 
-    @NotNull
-    public MutVec3d apply(@NotNull Quaternionf quaternion) {
+    public MutVec3d apply(Quaternionf quaternion) {
         return AEMath.rotateVector(coordinates, quaternion);
     }
 
-    @NotNull
     public MutVec3d apply(float roll, float pitch, float yaw) {
         roll = isUseRoll() ? roll : 0;
         pitch = isUsePitch() ? pitch : 0;
@@ -42,8 +39,7 @@ public class HardOrientedPosition implements RelativePosition {
         return apply(quaternion);
     }
 
-    @NotNull
-    public MutVec3d apply(@NotNull Rotation3d rotation3d) {
+    public MutVec3d apply(Rotation3d rotation3d) {
         if (isUsePitch() && isUseYaw() && isUseRoll()) {
             return apply(rotation3d.quaternion());
         } else {
@@ -52,12 +48,10 @@ public class HardOrientedPosition implements RelativePosition {
     }
 
     @Override
-    @NotNull
-    public Vec3d apply(@NotNull VariablesMap rootProperties) {
+    public Vec3d apply(VariablesMap rootProperties) {
         return apply(rootProperties.get(source));
     }
 
-    @NotNull
     public VariableKey<Rotation3d> getSource() {
         return source;
     }
@@ -74,7 +68,6 @@ public class HardOrientedPosition implements RelativePosition {
         return useYaw;
     }
 
-    @NotNull
     public ImmVec3d getCoordinates() {
         return coordinates;
     }

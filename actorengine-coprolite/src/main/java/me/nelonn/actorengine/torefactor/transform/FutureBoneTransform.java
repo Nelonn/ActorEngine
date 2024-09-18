@@ -1,6 +1,5 @@
 package me.nelonn.actorengine.torefactor.transform;
 
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
@@ -15,15 +14,15 @@ public class FutureBoneTransform {
     public FutureBoneTransform() {
     }
 
-    public void add(@NotNull FuturePropertyTransform propertyTransform) {
+    public void add(FuturePropertyTransform propertyTransform) {
         map.put(propertyTransform.property(), propertyTransform);
     }
 
-    public @NotNull Set<Property<?>> affects() {
+    public Set<Property<?>> affects() {
         return affects;
     }
 
-    public @Nullable FuturePropertyTransform getTransform(@NotNull Property<?> property) {
+    public @Nullable FuturePropertyTransform getTransform(Property<?> property) {
         return map.get(property);
     }
 }

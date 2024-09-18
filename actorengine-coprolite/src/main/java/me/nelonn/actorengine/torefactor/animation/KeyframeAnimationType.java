@@ -9,7 +9,7 @@ public class KeyframeAnimationType implements AnimationType<KeyframeAnimation> {
     private final boolean loop;
     private final KeyframeMap frames;
 
-    public KeyframeAnimationType(double duration, boolean loop, @NotNull KeyframeMap frames) {
+    public KeyframeAnimationType(double duration, boolean loop, KeyframeMap frames) {
         this.duration = duration;
         this.loop = loop;
         this.frames = frames;
@@ -23,12 +23,12 @@ public class KeyframeAnimationType implements AnimationType<KeyframeAnimation> {
         return loop;
     }
 
-    public @NotNull KeyframeMap getFrames() {
+    public KeyframeMap getFrames() {
         return frames;
     }
 
     @Override
-    public @NotNull KeyframeAnimation create(@NotNull AActor actor, @NotNull VariablesMap properties) {
+    public KeyframeAnimation create(AActor actor, VariablesMap properties) {
         return new KeyframeAnimation(this, actor, properties);
     }
 }

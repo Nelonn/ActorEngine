@@ -11,19 +11,19 @@ import java.util.Set;
 public class Transform {
     private final Map<Property<?>, Object> map = new HashMap<>();
 
-    public <T> @Nullable T getRaw(@NotNull Property<?> property) {
+    public <T> @Nullable T getRaw(Property<?> property) {
         return (T) map.get(property);
     }
 
-    public <T> @Nullable T get(@NotNull Property<T> property) {
+    public <T> @Nullable T get(Property<T> property) {
         return getRaw(property);
     }
 
-    public <T> void setRaw(@NotNull Property<?> property, @NotNull T value) {
+    public <T> void setRaw(Property<?> property, T value) {
         map.put(property, value);
     }
 
-    public <T> void set(@NotNull Property<T> property, @NotNull T value) {
+    public <T> void set(Property<T> property, T value) {
         setRaw(property, value);
     }
 
@@ -31,17 +31,17 @@ public class Transform {
         return map.isEmpty();
     }
 
-    public @NotNull Set<Property<?>> keySet() {
+    public Set<Property<?>> keySet() {
         return map.keySet();
     }
 
-    public @NotNull Transform copy() {
+    public Transform copy() {
         Transform transform = new Transform();
         transform.map.putAll(map);
         return transform;
     }
 
-    public void add(@NotNull Transform other) {
+    public void add(Transform other) {
         for (Map.Entry<Property<?>, Object> entry : other.map.entrySet()) {
             Property<?> key = entry.getKey();
             Object value = entry.getValue();
@@ -54,7 +54,7 @@ public class Transform {
         }
     }
 
-    public void lerp(@NotNull Transform other, float delta) {
+    public void lerp(Transform other, float delta) {
         for (Map.Entry<Property<?>, Object> entry : other.map.entrySet()) {
             Property<?> key = entry.getKey();
             Object value = entry.getValue();

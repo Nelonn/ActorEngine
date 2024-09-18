@@ -1,27 +1,25 @@
 package me.nelonn.actorengine.torefactor.variable;
 
-import org.jetbrains.annotations.NotNull;
-
 public class VariableKey<T> {
     private final String name;
     private final Class<T> type;
     private final T defaultValue;
 
-    public VariableKey(@NotNull String name, @NotNull Class<T> type, @NotNull final T defaultValue) {
+    public VariableKey(String name, Class<T> type, final T defaultValue) {
         this.name = name;
         this.type = type;
         this.defaultValue = defaultValue;
     }
 
-    public @NotNull String getName() {
+    public String getName() {
         return name;
     }
 
-    public @NotNull Class<T> getType() {
+    public Class<T> getType() {
         return type;
     }
 
-    public @NotNull T getDefaultValue() {
+    public T getDefaultValue() {
         return defaultValue;
     }
 

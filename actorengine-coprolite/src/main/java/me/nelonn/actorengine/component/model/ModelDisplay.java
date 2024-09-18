@@ -5,11 +5,10 @@ import me.nelonn.actorengine.api.actor.Actor;
 import net.minecraft.world.entity.Display;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class ModelDisplay extends Display.ItemDisplay implements ActorPart {
-    private Actor actor;
+    @Nullable private Actor actor;
 
     public ModelDisplay(EntityType<?> type, Level world) {
         super(type, world);
@@ -25,7 +24,7 @@ public class ModelDisplay extends Display.ItemDisplay implements ActorPart {
     }
 
     @Override
-    public boolean canChangeDimensions(@NotNull Level from, @NotNull Level to) {
+    public boolean canChangeDimensions(Level from, Level to) {
         return false;
     }
 

@@ -16,23 +16,23 @@ public class DisplaySeat extends Display.ItemDisplay implements SeatLike {
     private final BukkitEntity<DisplaySeat, CraftItemDisplay> bukkitEntity = new BukkitEntity<>(this, CraftItemDisplay::new);
     private final SeatBehaviour seat = new SeatBehaviour(this);
 
-    public DisplaySeat(@NotNull EntityType<?> type, @NotNull Level world) {
+    public DisplaySeat(EntityType<?> type, Level world) {
         super(type, world);
     }
 
     @Override
-    public @NotNull Seat asSeat() {
+    public Seat asSeat() {
         return this.seat;
     }
 
     @Override
-    protected void addPassenger(@NotNull Entity passenger) {
+    protected void addPassenger(Entity passenger) {
         this.seat.addPassenger(passenger, super::addPassenger);
     }
 
     // Paper only
     @Override
-    protected boolean removePassenger(@NotNull Entity entity, boolean suppressCancellation) {
+    protected boolean removePassenger(Entity entity, boolean suppressCancellation) {
         return this.seat.removePassenger(entity, suppressCancellation, super::removePassenger);
     }
 
@@ -47,15 +47,15 @@ public class DisplaySeat extends Display.ItemDisplay implements SeatLike {
     }
 
     @Override
-    protected void readAdditionalSaveData(@NotNull CompoundTag nbt) {
+    protected void readAdditionalSaveData(CompoundTag nbt) {
     }
 
     @Override
-    protected void addAdditionalSaveData(@NotNull CompoundTag nbt) {
+    protected void addAdditionalSaveData(CompoundTag nbt) {
     }
 
     /*@Override
-    public @NotNull Vec3 getDismountLocationForPassenger(@NotNull LivingEntity passenger) {
+    public Vec3 getDismountLocationForPassenger(LivingEntity passenger) {
         DismountLocationGetter.Response dismountLocation = DismountLocationGetter.Response.DEFAULT;
         if (dismountLocationGetter != null) {
             Integer position = positionedPassengers.inverse().get(passenger);
@@ -71,7 +71,7 @@ public class DisplaySeat extends Display.ItemDisplay implements SeatLike {
     }*/
 
     @Override
-    protected boolean canAddPassenger(@NotNull Entity passenger) {
+    protected boolean canAddPassenger(Entity passenger) {
         return true;
     }
 
@@ -80,7 +80,7 @@ public class DisplaySeat extends Display.ItemDisplay implements SeatLike {
     }
 
     @Override
-    public boolean canChangeDimensions(@NotNull Level from, @NotNull Level to) {
+    public boolean canChangeDimensions(Level from, Level to) {
         return false;
     }
 
@@ -95,12 +95,12 @@ public class DisplaySeat extends Display.ItemDisplay implements SeatLike {
     }
 
     @Override
-    public @NotNull CraftEntity getBukkitEntity() {
+    public CraftEntity getBukkitEntity() {
         return this.bukkitEntity.getBukkitEntity();
     }
 
     @Override
-    public @NotNull CraftEntity getBukkitEntityRaw() {
+    public CraftEntity getBukkitEntityRaw() {
         return this.bukkitEntity.getBukkitEntityRaw();
     }
 }

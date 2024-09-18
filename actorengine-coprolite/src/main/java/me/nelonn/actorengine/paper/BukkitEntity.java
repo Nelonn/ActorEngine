@@ -3,21 +3,21 @@ package me.nelonn.actorengine.paper;
 import net.minecraft.world.entity.Entity;
 import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.craftbukkit.entity.CraftEntity;
-import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.function.BiFunction;
 
 public class BukkitEntity<M extends Entity, B extends CraftEntity> {
     private final M handle;
     private final BiFunction<CraftServer, M, B> factory;
-    private B value;
+    @Nullable private B value;
 
-    public BukkitEntity(@NotNull M handle, @NotNull BiFunction<CraftServer, M, B> factory) {
+    public BukkitEntity(M handle, BiFunction<CraftServer, M, B> factory) {
         this.handle = handle;
         this.factory = factory;
     }
 
-    public @NotNull B getBukkitEntity() {
+    public B getBukkitEntity() {
         if (this.value == null) {
             synchronized (this) {
                 if (this.value == null) {

@@ -13,7 +13,7 @@ public interface Seat extends SeatLike {
 
     @Nullable Entity getPassenger(int position);
 
-    void sit(int position, @NotNull Entity entity);
+    void sit(int position, Entity entity);
 
     @Nullable
     default DriverInput getDriverInput(int position) {
@@ -24,15 +24,15 @@ public interface Seat extends SeatLike {
 
     boolean isLastDismount(int position);
 
-    void setLastDismount(@NotNull UUID playerId, boolean lastDismount);
+    void setLastDismount(UUID playerId, boolean lastDismount);
 
     boolean isAllPreventDismount();
 
     void setAllPreventDismount(boolean allPreventDismount);
 
-    void setPreventDismount(@NotNull UUID playerId, boolean preventDismount);
+    void setPreventDismount(UUID playerId, boolean preventDismount);
 
-    boolean isPreventDismount(@NotNull UUID playerId);
+    boolean isPreventDismount(UUID playerId);
 
     @Nullable DismountLocationGetter getDismountLocationGetter();
 
@@ -47,26 +47,26 @@ public interface Seat extends SeatLike {
     void setTickListener(@Nullable Runnable tickListener);
 
     @Override
-    default @NotNull Seat asSeat() {
+    default Seat asSeat() {
         return this;
     }
 
     interface EventListener {
 
-        default void passengerAdded(@NotNull Entity entity) {
+        default void passengerAdded(Entity entity) {
         }
 
-        default void passengerAddedToPosition(@Nullable Integer position, @NotNull Entity entity) {
+        default void passengerAddedToPosition(@Nullable Integer position, Entity entity) {
         }
 
-        default void passengerRemoved(@Nullable Integer position, @NotNull Entity entity) {
+        default void passengerRemoved(@Nullable Integer position, Entity entity) {
         }
 
     }
 
     @FunctionalInterface
     interface DismountLocationGetter {
-        @NotNull Response getDismountLocation(int position, @NotNull Entity entity);
+        Response getDismountLocation(int position, Entity entity);
 
         record Response(Vec3d position, boolean isAbsolute) {
             public static final Response DEFAULT = new Response(ImmVec3d.ZERO, false);

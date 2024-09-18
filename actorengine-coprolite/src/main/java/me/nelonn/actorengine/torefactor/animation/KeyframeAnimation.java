@@ -18,7 +18,7 @@ public class KeyframeAnimation extends Animation {
     private final KeyframeMap frames;
     private final double startedTime;
 
-    public KeyframeAnimation(@NotNull KeyframeAnimationType type, @NotNull AActor actor, @NotNull VariablesMap properties) {
+    public KeyframeAnimation(KeyframeAnimationType type, AActor actor, VariablesMap properties) {
         super(type, actor, properties);
         this.duration = type.getDuration();
         this.loop = type.isLoop();
@@ -40,7 +40,7 @@ public class KeyframeAnimation extends Animation {
     }
 
     @Override
-    public @Nullable Transform animate(@NotNull AComponent bone) {
+    public @Nullable Transform animate(AComponent bone) {
         double time = animationTime() % duration;
 
         KeyframeMap.Session session = frames.bone(bone.getName());
@@ -92,7 +92,7 @@ public class KeyframeAnimation extends Animation {
         return loop;
     }
 
-    public @NotNull KeyframeMap getFrames() {
+    public KeyframeMap getFrames() {
         return frames;
     }
 }

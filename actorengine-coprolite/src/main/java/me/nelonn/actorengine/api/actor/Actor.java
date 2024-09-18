@@ -8,7 +8,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.ApiStatus;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.OverridingMethodsMustInvokeSuper;
@@ -24,7 +23,7 @@ public class Actor {
     private final Map<String, AComponent> components = new HashMap<>();
     private final Collection<AComponent> allComponents = Collections.unmodifiableCollection(components.values());
     
-    public Actor(@NotNull ActorType<?> type, @NotNull Root root) {
+    public Actor(ActorType<?> type, Root root) {
         this.type = type;
         this.root = root;
     }
@@ -43,11 +42,11 @@ public class Actor {
     }
 
     @OverridingMethodsMustInvokeSuper
-    public void save(@NotNull CompoundTag nbt) {
+    public void save(CompoundTag nbt) {
     }
 
     @OverridingMethodsMustInvokeSuper
-    public void load(@NotNull CompoundTag nbt) {
+    public void load(CompoundTag nbt) {
     }
 
     @OverridingMethodsMustInvokeSuper
@@ -108,15 +107,15 @@ public class Actor {
         }
     }
 
-    public void remove(@NotNull Entity.RemovalReason reason) {
+    public void remove(Entity.RemovalReason reason) {
         root.asEntity().setRemoved(reason);
     }
 
-    public <T extends AComponent> T addComponent(@NotNull T component) {
+    public <T extends AComponent> T addComponent(T component) {
         return addComponent(component, false);
     }
 
-    public <T extends AComponent> T addComponent(@NotNull T component, boolean replace) {
+    public <T extends AComponent> T addComponent(T component, boolean replace) {
         String componentName = component.getName();
         if (componentName.equals("actor") || componentName.equals("root") || componentName.equals("this") || componentName.equals("self")) {
             throw new IllegalArgumentException("Component name '" + componentName + "' is illegal");
@@ -128,31 +127,31 @@ public class Actor {
         return component;
     }
 
-    public boolean hasComponent(@NotNull String name) {
+    public boolean hasComponent(String name) {
         return components.containsKey(name.toLowerCase(Locale.ENGLISH));
     }
 
-    public <T extends AComponent> boolean hasComponent(@NotNull String name, @NotNull Class<T> type) {
+    public <T extends AComponent> boolean hasComponent(String name, Class<T> type) {
         AComponent component = components.get(name.toLowerCase(Locale.ENGLISH));
         return component != null && type.isAssignableFrom(component.getClass());
     }
 
-    public @Nullable AComponent removeComponent(@NotNull String name) {
+    public @Nullable AComponent removeComponent(String name) {
         return components.remove(name.toLowerCase(Locale.ENGLISH));
     }
 
-    public @Nullable AComponent getComponentNullable(@NotNull String name) {
+    public @Nullable AComponent getComponentNullable(String name) {
         return components.get(name.toLowerCase(Locale.ENGLISH));
     }
 
     // maybe <T extends AComponent>? I'm more comfortable without
-    public <T> @Nullable T getComponentNullable(@NotNull String name, @NotNull Class<T> type) {
+    public <T> @Nullable T getComponentNullable(String name, Class<T> type) {
         AComponent component = components.get(name.toLowerCase(Locale.ENGLISH));
         if (component == null || !type.isAssignableFrom(component.getClass())) return null;
         return type.cast(component);
     }
 
-    public @NotNull AComponent getComponent(@NotNull String name) {
+    public AComponent getComponent(String name) {
         name = name.toLowerCase(Locale.ENGLISH);
         AComponent component = components.get(name);
         if (component == null) {
@@ -162,7 +161,7 @@ public class Actor {
     }
 
     // maybe <T extends AComponent>? I'm more comfortable without
-    public <T> @NotNull T getComponent(@NotNull String name, @NotNull Class<T> type) {
+    public <T> T getComponent(String name, Class<T> type) {
         name = name.toLowerCase(Locale.ENGLISH);
         AComponent component = components.get(name);
         if (component == null) {
@@ -174,30 +173,30 @@ public class Actor {
         return type.cast(component);
     }
 
-    public <T> @NotNull Collection<T> getComponents(@NotNull Class<T> type) {
+    public <T> Collection<T> getComponents(Class<T> type) {
         return getAllComponents().stream()
                 .filter(component -> type.isAssignableFrom(component.getClass()))
                 .map(type::cast)
                 .toList();
     }
 
-    public @NotNull Collection<AComponent> getAllComponents() {
+    public Collection<AComponent> getAllComponents() {
         return allComponents;
     }
 
-    public @NotNull Level level() {
+    public Level level() {
         return this.root.level();
     }
 
-    public @NotNull MutVec3d position() {
+    public MutVec3d position() {
         return this.root.position();
     }
 
-    public @NotNull ActorType<?> getType() {
+    public ActorType<?> getType() {
         return this.type;
     }
 
-    public @NotNull Root getRoot() {
+    public Root getRoot() {
         return this.root;
     }
 
@@ -215,7 +214,7 @@ public class Actor {
     }
 
     @ApiStatus.Internal
-    public void onRootRemoved(@NotNull Entity.RemovalReason reason) {
+    public void onRootRemoved(Entity.RemovalReason reason) {
         destroy();
     }
 

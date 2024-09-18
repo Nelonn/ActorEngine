@@ -11,11 +11,11 @@ import java.util.TreeMap;
 public class KeyframeMap {
     private final TreeMap<Double, Keyframe> map = new TreeMap<>();
 
-    public void add(@NotNull Keyframe keyframe) {
+    public void add(Keyframe keyframe) {
         map.put(keyframe.getTime(), keyframe);
     }
 
-    public @Nullable Session bone(@NotNull String boneName) {
+    public @Nullable Session bone(String boneName) {
         TreeMap<Double, Keyframe> newMap = new TreeMap<>();
         newMap.putAll(map);
         newMap.values().removeIf(keyframe -> !keyframe.shouldAffectBone(boneName));
@@ -27,12 +27,12 @@ public class KeyframeMap {
         private final String boneName;
         private final TreeMap<Double, Keyframe> map;
 
-        public Session(@NotNull String boneName, @NotNull TreeMap<Double, Keyframe> map) {
+        public Session(String boneName, TreeMap<Double, Keyframe> map) {
             this.boneName = boneName;
             this.map = map;
         }
 
-        public @Nullable Session property(@NotNull Property<?> property) {
+        public @Nullable Session property(Property<?> property) {
             TreeMap<Double, Keyframe> newMap = new TreeMap<>();
             newMap.putAll(map);
             newMap.values().removeIf(keyframe -> !keyframe.shouldAffectBoneProperty(boneName, property));
@@ -44,7 +44,7 @@ public class KeyframeMap {
             return map.get(time);
         }
 
-        public @NotNull Pair<Keyframe, Keyframe> findSurroundingKeyframes(double targetTime) {
+        public Pair<Keyframe, Keyframe> findSurroundingKeyframes(double targetTime) {
             Map.Entry<Double, Keyframe> floorEntry = map.floorEntry(targetTime);
             Map.Entry<Double, Keyframe> ceilingEntry = map.ceilingEntry(targetTime);
             return Pair.of(floorEntry != null ? floorEntry.getValue() : null,

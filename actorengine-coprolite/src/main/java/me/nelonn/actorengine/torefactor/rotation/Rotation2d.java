@@ -1,25 +1,20 @@
 package me.nelonn.actorengine.torefactor.rotation;
 
-import org.jetbrains.annotations.NotNull;
-
 public interface Rotation2d extends Pitch, Yaw {
 
     float pitch();
 
     float yaw();
 
-    @NotNull
     default Rotation2d with(float pitch, float yaw) {
         return new ImmRotation2d(pitch, yaw);
     }
 
-    @NotNull
-    default Rotation2d add(@NotNull Rotation2d value) {
+    default Rotation2d add(Rotation2d value) {
         return with(this.pitch() + value.pitch(), this.yaw() + value.yaw());
     }
 
-    @NotNull
-    default Rotation2d lerp(@NotNull Rotation2d value, float delta) {
+    default Rotation2d lerp(Rotation2d value, float delta) {
         return with(lerpAngle(this.pitch(), value.pitch(), delta), lerpAngle(this.yaw(), value.yaw(), delta));
     }
 
@@ -30,7 +25,6 @@ public interface Rotation2d extends Pitch, Yaw {
         return start + delta * difference;
     }
 
-    @NotNull
     default MutRotation2d mutableCopy() {
         return new MutRotation2d(this.pitch(), this.yaw());
     }

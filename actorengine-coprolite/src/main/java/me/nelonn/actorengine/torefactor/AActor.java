@@ -18,7 +18,6 @@ import me.nelonn.actorengine.torefactor.variable.VariablesMap;
 import me.nelonn.bestvecs.ImmVec3d;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -31,26 +30,26 @@ public abstract class AActor extends Actor {
     protected final MutRotation3d mainRotation = new MutRotation3d(0, 0, 0);
     protected FlexibleVariablesMap variables = new FlexibleVariablesMap();
 
-    public AActor(@NotNull ActorType<?> type, @NotNull Root root) {
+    public AActor(ActorType<?> type, Root root) {
         super(type, root);
         variables.add(MAIN_ROTATION, (Supplier<Rotation3d>) this::getMainRotation);
     }
 
     // mutable copy
-    public @NotNull MutRotation3d getMainRotation() {
+    public MutRotation3d getMainRotation() {
         return mainRotation.mutableCopy();
     }
 
-    public @NotNull Collection<Animation> getPlayingAnimations() {
+    public Collection<Animation> getPlayingAnimations() {
         return playingAnimations.values();
     }
 
-    public void playAnimation(@NotNull AnimationType<?> animationType) {
+    public void playAnimation(AnimationType<?> animationType) {
         Animation animation = animationType.create(this, variables);
         playingAnimations.put(animationType, animation);
     }
 
-    public @NotNull VariablesMap getVariables() {
+    public VariablesMap getVariables() {
         return variables;
     }
 
@@ -91,7 +90,7 @@ public abstract class AActor extends Actor {
     private static final String COMPONENTS_DATA = "ComponentsData";
 
     @Override
-    public void save(@NotNull CompoundTag nbt) {
+    public void save(CompoundTag nbt) {
         super.save(nbt);
 
         Collection<SaveLoadComponent> toSave = getComponents(SaveLoadComponent.class);
@@ -120,7 +119,7 @@ public abstract class AActor extends Actor {
     }
 
     @Override
-    public void load(@NotNull CompoundTag nbt) {
+    public void load(CompoundTag nbt) {
         super.load(nbt);
 
         if (!nbt.contains(COMPONENTS_DATA)) return;

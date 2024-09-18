@@ -5,9 +5,9 @@ import me.nelonn.actorengine.api.Root;
 import me.nelonn.actorengine.api.RootLike;
 import me.nelonn.actorengine.api.actor.Actor;
 import me.nelonn.actorengine.api.actor.ActorType;
-import me.nelonn.actorengine.utility.SetRemovedHandler;
 import me.nelonn.actorengine.paper.BukkitEntity;
 import me.nelonn.actorengine.paper.CraftRoot;
+import me.nelonn.actorengine.utility.SetRemovedHandler;
 import me.nelonn.flint.path.Key;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
@@ -21,7 +21,6 @@ import net.minecraft.world.entity.Pose;
 import net.minecraft.world.level.Level;
 import org.bukkit.craftbukkit.entity.CraftEntity;
 import org.jetbrains.annotations.ApiStatus;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Locale;
@@ -30,10 +29,10 @@ public class RootEntity extends Entity implements RootLike, SetRemovedHandler {
     public static final boolean configVisibleByDefault = false;
     private final BukkitEntity<RootEntity, CraftRoot> bukkitEntity = new BukkitEntity<>(this, CraftRoot::new); // Paper
     private final ActorEngine actorEngine;
-    private Actor actor;
+    @Nullable private Actor actor;
     private EntityDimensions dimensions = EntityDimensions.scalable(0.0F, 0.0F);
     private boolean shouldBeSaved = true;
-    private CompoundTag savedNbt;
+    @Nullable private CompoundTag savedNbt;
     private final RootDelegate root;
 
     public RootEntity(EntityType<?> type, Level world) {
@@ -55,16 +54,16 @@ public class RootEntity extends Entity implements RootLike, SetRemovedHandler {
         this.actor = owner;
     }
 
-    public @NotNull EntityDimensions getDimensions() {
+    public EntityDimensions getDimensions() {
         return dimensions;
     }
 
-    public void setDimensions(@NotNull EntityDimensions dimensions) {
+    public void setDimensions(EntityDimensions dimensions) {
         this.dimensions = dimensions;
         this.refreshDimensions();
     }
 
-    public @NotNull ActorEngine getActorEngine() {
+    public ActorEngine getActorEngine() {
         return actorEngine;
     }
 
@@ -77,28 +76,28 @@ public class RootEntity extends Entity implements RootLike, SetRemovedHandler {
     }
 
     @Override
-    public @NotNull Root asRoot() {
+    public Root asRoot() {
         return root;
     }
 
     // Paper/Bukkit start
     @Override
-    public @NotNull CraftEntity getBukkitEntity() {
+    public CraftEntity getBukkitEntity() {
         return this.bukkitEntity.getBukkitEntity();
     }
 
     @Override
-    public @NotNull CraftEntity getBukkitEntityRaw() {
+    public CraftEntity getBukkitEntityRaw() {
         return this.bukkitEntity.getBukkitEntityRaw();
     }
     // Paper/Bukkit end
 
     @Override
-    protected void defineSynchedData(@NotNull SynchedEntityData.Builder builder) {
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
     }
 
     @Override
-    public boolean save(@NotNull CompoundTag nbt) {
+    public boolean save(CompoundTag nbt) {
         boolean result = false;
         try {
             result = super.save(nbt);
@@ -109,7 +108,7 @@ public class RootEntity extends Entity implements RootLike, SetRemovedHandler {
     }
 
     @Override
-    protected void addAdditionalSaveData(@NotNull CompoundTag nbt) {
+    protected void addAdditionalSaveData(CompoundTag nbt) {
         if (this.actor == null) {
             if (this.savedNbt != null) {
                 nbt.merge(this.savedNbt);
@@ -123,7 +122,7 @@ public class RootEntity extends Entity implements RootLike, SetRemovedHandler {
     }
 
     @Override
-    protected void readAdditionalSaveData(@NotNull CompoundTag nbt) {
+    protected void readAdditionalSaveData(CompoundTag nbt) {
         try {
             String typeString = nbt.getString(ActorEngine.ID + ".ActorType");
             if (typeString.isEmpty()) {
@@ -167,19 +166,19 @@ public class RootEntity extends Entity implements RootLike, SetRemovedHandler {
      * called by MixinEntity
      */
     @ApiStatus.Internal
-    public void handleSetRemoved(@NotNull RemovalReason reason) {
+    public void handleSetRemoved(RemovalReason reason) {
         if (this.actor != null) {
             this.actor.onRootRemoved(reason);
         }
     }
 
     @Override
-    public @NotNull Packet<ClientGamePacketListener> getAddEntityPacket(@NotNull ServerEntity entityTrackerEntry) {
+    public Packet<ClientGamePacketListener> getAddEntityPacket(ServerEntity entityTrackerEntry) {
         throw new IllegalStateException("Root entity should never be sent");
     }
 
     @Override
-    public @NotNull EntityDimensions getDimensions(@NotNull Pose pose) {
+    public EntityDimensions getDimensions(Pose pose) {
         return dimensions;
     }
 

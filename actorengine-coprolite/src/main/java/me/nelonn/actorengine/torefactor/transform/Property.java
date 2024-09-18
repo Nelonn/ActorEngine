@@ -1,9 +1,11 @@
 package me.nelonn.actorengine.torefactor.transform;
 
 import me.nelonn.actorengine.torefactor.rotation.Rotation2d;
-import me.nelonn.bestvecs.*;
 import me.nelonn.actorengine.utility.Enum;
-import org.jetbrains.annotations.NotNull;
+import me.nelonn.bestvecs.ImmVec3d;
+import me.nelonn.bestvecs.ImmVec3f;
+import me.nelonn.bestvecs.Vec3d;
+import me.nelonn.bestvecs.Vec3f;
 import org.joml.Quaternionf;
 
 public final class Property<T> {
@@ -17,20 +19,20 @@ public final class Property<T> {
     private final Operators<T> operators;
     private final T zero;
 
-    private Property(@NotNull Operators<T> operators, @NotNull T zero) {
+    private Property(Operators<T> operators, T zero) {
         this.operators = operators;
         this.zero = zero;
     }
 
-    public @NotNull Operators<T> getOperators() {
+    public Operators<T> getOperators() {
         return operators;
     }
 
-    public @NotNull Object getZero() {
+    public Object getZero() {
         return zero;
     }
 
-    @NotNull
+    
     public String name() {
         return ENUM.name(this);
     }

@@ -13,16 +13,16 @@ public interface Root extends RootLike {
      * Paperweight does not work well with child classes, use the entity class for the necessary methods
      * @return Root entity
      */
-    @NotNull Entity asEntity();
+    Entity asEntity();
 
     // Root specific methods
 
-    @NotNull
+    
     ActorEngine getActorEngine();
 
-    @NotNull Level level();
+    Level level();
 
-    @NotNull MutVec3d position();
+    MutVec3d position();
 
     void moveTo(double x, double y, double z);
 
@@ -35,7 +35,7 @@ public interface Root extends RootLike {
     void setShouldBeSaved(boolean flag);
 
     @Override
-    default @NotNull Root asRoot() {
+    default Root asRoot() {
         return this;
     }
 }

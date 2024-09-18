@@ -1,10 +1,9 @@
 package me.nelonn.actorengine;
 
-import me.nelonn.coprolite.api.CoproliteLoader;
-import me.nelonn.coprolite.paper.std.registryaccessor.EntityTypeRegistry;
 import me.nelonn.actorengine.api.ActorEngine;
 import me.nelonn.actorengine.api.actor.ActorRegistry;
-import org.jetbrains.annotations.NotNull;
+import me.nelonn.coprolite.api.CoproliteLoader;
+import me.nelonn.coprolite.paper.std.registryaccessor.EntityTypeRegistry;
 import org.slf4j.Logger;
 
 public class ActorEngineCore implements ActorEngine {
@@ -13,13 +12,13 @@ public class ActorEngineCore implements ActorEngine {
     private final Logger logger;
     private boolean removeActorsOfANonexistentType = false;
 
-    public ActorEngineCore(@NotNull Logger logger) {
+    public ActorEngineCore(Logger logger) {
         CoproliteLoader.getInstance().getObjectShare().put(KEY, this);
         this.logger = logger;
     }
 
     @Override
-    public @NotNull ActorRegistry actors() {
+    public ActorRegistry actors() {
         return this.actorRegistry;
     }
 
@@ -33,7 +32,7 @@ public class ActorEngineCore implements ActorEngine {
     }
 
     @Override
-    public @NotNull Logger getLogger() {
+    public Logger getLogger() {
         return this.logger;
     }
 

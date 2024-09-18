@@ -1,7 +1,6 @@
 package me.nelonn.actorengine.torefactor.rotation;
 
 import me.nelonn.actorengine.utility.AEMath;
-import org.jetbrains.annotations.NotNull;
 
 public class MutRotation3d extends MutRotation2d implements Rotation3d {
     private float roll;
@@ -16,19 +15,18 @@ public class MutRotation3d extends MutRotation2d implements Rotation3d {
         return this.roll;
     }
 
-    @NotNull
     public MutRotation3d roll(float roll) {
         this.roll = AEMath.normalize360rad(roll);
         return this;
     }
 
     @Override
-    public @NotNull MutRotation3d pitch(float pitch) {
+    public MutRotation3d pitch(float pitch) {
         return (MutRotation3d) super.pitch(pitch);
     }
 
     @Override
-    public @NotNull MutRotation3d yaw(float yaw) {
+    public MutRotation3d yaw(float yaw) {
         return (MutRotation3d) super.yaw(yaw);
     }
 }

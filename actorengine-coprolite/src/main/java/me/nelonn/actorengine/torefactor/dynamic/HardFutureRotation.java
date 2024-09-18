@@ -4,7 +4,6 @@ import me.nelonn.actorengine.torefactor.rotation.MutRotation2d;
 import me.nelonn.actorengine.torefactor.rotation.Rotation2d;
 import me.nelonn.actorengine.torefactor.variable.VariableKey;
 import me.nelonn.actorengine.torefactor.variable.VariablesMap;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class HardFutureRotation implements FutureRotation {
@@ -23,7 +22,7 @@ public class HardFutureRotation implements FutureRotation {
     }
 
     @Override
-    public @NotNull MutRotation2d apply(@NotNull VariablesMap properties) {
+    public MutRotation2d apply(VariablesMap properties) {
         float pitch = getAddPitch();
         float yaw = getAddYaw();
         VariableKey<Rotation2d> source = getSource();

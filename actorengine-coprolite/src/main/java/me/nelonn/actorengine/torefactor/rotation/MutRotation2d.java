@@ -1,7 +1,6 @@
 package me.nelonn.actorengine.torefactor.rotation;
 
 import me.nelonn.actorengine.utility.AEMath;
-import org.jetbrains.annotations.NotNull;
 
 public class MutRotation2d implements Rotation2d {
     private float pitch;
@@ -17,7 +16,6 @@ public class MutRotation2d implements Rotation2d {
         return pitch;
     }
 
-    @NotNull
     public MutRotation2d pitch(float pitch) {
         this.pitch = AEMath.normalize360rad(pitch);
         return this;
@@ -28,7 +26,6 @@ public class MutRotation2d implements Rotation2d {
         return yaw;
     }
 
-    @NotNull
     public MutRotation2d yaw(float yaw) {
         this.yaw = AEMath.normalize360rad(yaw);
         return this;

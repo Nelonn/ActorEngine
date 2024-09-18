@@ -5,7 +5,6 @@ import com.google.common.collect.HashBiMap;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
@@ -19,11 +18,11 @@ public class SeatBehaviour implements Seat {
     private final BiMap<Integer, Entity> positionedPassengers = HashBiMap.create(1);
     private boolean allPreventDismount = false;
     private final Map<UUID, DismountState> perPlayerDismount = new HashMap<>();
-    private Seat.DismountLocationGetter dismountLocationGetter = null;
-    private Seat.EventListener eventListener = null;
-    private Runnable tickListener = null;
+    @Nullable private Seat.DismountLocationGetter dismountLocationGetter = null;
+    @Nullable private Seat.EventListener eventListener = null;
+    @Nullable private Runnable tickListener = null;
 
-    public SeatBehaviour(@NotNull Entity handle) {
+    public SeatBehaviour(Entity handle) {
         this.handle = handle;
     }
 
@@ -34,7 +33,7 @@ public class SeatBehaviour implements Seat {
     }
 
     @Override
-    public void sit(int position, @NotNull Entity entity) {
+    public void sit(int position, Entity entity) {
         if (entity.startRiding(this.handle, true)) {
             positionedPassengers.put(position, entity);
             if (eventListener != null) {
@@ -56,7 +55,7 @@ public class SeatBehaviour implements Seat {
     }
 
     @Override
-    public void setLastDismount(@NotNull UUID playerId, boolean lastDismount) {
+    public void setLastDismount(UUID playerId, boolean lastDismount) {
         this.perPlayerDismount.computeIfAbsent(playerId, unused -> new me.nelonn.bestseat.DismountState()).setLastDismount(lastDismount);
     }
 
@@ -71,7 +70,7 @@ public class SeatBehaviour implements Seat {
     }
 
     @Override
-    public void setPreventDismount(@NotNull UUID playerId, boolean preventDismount) {
+    public void setPreventDismount(UUID playerId, boolean preventDismount) {
         if (preventDismount) {
             me.nelonn.bestseat.DismountState state = this.perPlayerDismount.computeIfAbsent(playerId, unused -> new me.nelonn.bestseat.DismountState());
             state.setPreventDismount(true);
@@ -88,7 +87,7 @@ public class SeatBehaviour implements Seat {
     }
 
     @Override
-    public boolean isPreventDismount(@NotNull UUID playerId) {
+    public boolean isPreventDismount(UUID playerId) {
         return isAllPreventDismount() || perPlayerDismount.containsKey(playerId);
     }
 
@@ -125,7 +124,7 @@ public class SeatBehaviour implements Seat {
         this.tickListener = tickListener;
     }
 
-    public void addPassenger(@NotNull Entity passenger, @NotNull Consumer<Entity> _super) {
+    public void addPassenger(Entity passenger, Consumer<Entity> _super) {
         _super.accept(passenger);
         if (eventListener != null) {
             eventListener.passengerAdded(passenger);
@@ -133,7 +132,7 @@ public class SeatBehaviour implements Seat {
     }
 
     // Paper only
-    public boolean removePassenger(@NotNull Entity entity, boolean suppressCancellation, @NotNull BiFunction<Entity, Boolean, Boolean> _super) {
+    public boolean removePassenger(Entity entity, boolean suppressCancellation, BiFunction<Entity, Boolean, Boolean> _super) {
         if (_super.apply(entity, suppressCancellation)) {
             Integer position = positionedPassengers.inverse().remove(entity);
             if (eventListener != null) {

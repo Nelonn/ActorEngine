@@ -3,12 +3,11 @@ package me.nelonn.actorengine.torefactor.dynamic;
 import me.nelonn.actorengine.torefactor.rotation.Rotation3d;
 import me.nelonn.actorengine.torefactor.variable.VariableKey;
 import me.nelonn.actorengine.torefactor.variable.VariablesMap;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Quaternionf;
 
 public class HardFutureDisplayRotation implements FutureDisplayRotation {
-    private final VariableKey<Rotation3d> source;
+    @Nullable private final VariableKey<Rotation3d> source;
     private final boolean useRoll;
     private final boolean usePitch;
     private final boolean useYaw;
@@ -27,7 +26,7 @@ public class HardFutureDisplayRotation implements FutureDisplayRotation {
     }
 
     @Override
-    public @NotNull Quaternionf apply(@NotNull VariablesMap properties) {
+    public Quaternionf apply(VariablesMap properties) {
         float roll = (float) Math.toRadians(getAddRoll());
         float pitch = (float) Math.toRadians(getAddPitch());
         float yaw = (float) Math.toRadians(getAddYaw());

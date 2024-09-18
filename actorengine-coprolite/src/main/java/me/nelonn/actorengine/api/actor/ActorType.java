@@ -10,16 +10,16 @@ import org.jetbrains.annotations.NotNull;
 public class ActorType<T extends Actor> {
     private final ActorFactory<T> factory;
 
-    public ActorType(@NotNull ActorFactory<T> factory) {
+    public ActorType(ActorFactory<T> factory) {
         this.factory = factory;
     }
 
-    public @NotNull Key getKey() {
+    public Key getKey() {
         return ActorEngine.get().actors().getKeyOptional(this).orElseThrow(() ->
                 new IllegalStateException("Actor type from package '" + factory.getClass().getPackageName() + "' not registered"));
     }
 
-    public @NotNull T spawn(@NotNull Level world) {
+    public T spawn(Level world) {
         RootEntity root = new RootEntity(world);
         world.addFreshEntity(root);
         T actor = create(root.asRoot());
@@ -28,11 +28,11 @@ public class ActorType<T extends Actor> {
         return actor;
     }
 
-    public @NotNull T create(@NotNull Root world) {
+    public T create(Root world) {
         return this.factory.create(this, world);
     }
 
     public interface ActorFactory<T extends Actor> {
-        @NotNull T create(@NotNull ActorType<T> type, @NotNull Root root);
+        T create(ActorType<T> type, Root root);
     }
 }
