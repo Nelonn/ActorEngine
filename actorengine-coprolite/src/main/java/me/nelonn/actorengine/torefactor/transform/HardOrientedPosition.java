@@ -3,7 +3,7 @@ package me.nelonn.actorengine.torefactor.transform;
 import me.nelonn.actorengine.torefactor.rotation.Rotation3d;
 import me.nelonn.actorengine.torefactor.variable.VariableKey;
 import me.nelonn.actorengine.torefactor.variable.VariablesMap;
-import me.nelonn.actorengine.utility.AEMath;
+import me.nelonn.actorengine.utility.Adapter;
 import me.nelonn.bestvecs.ImmVec3d;
 import me.nelonn.bestvecs.MutVec3d;
 import me.nelonn.bestvecs.Vec3d;
@@ -25,7 +25,7 @@ public class HardOrientedPosition implements RelativePosition {
     }
 
     public MutVec3d apply(Quaternionf quaternion) {
-        return AEMath.rotateVector(coordinates, quaternion);
+        return Adapter.toMutBV(quaternion.transform(Adapter.toJoml(coordinates)));
     }
 
     public MutVec3d apply(float roll, float pitch, float yaw) {

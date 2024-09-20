@@ -1,5 +1,6 @@
 package me.nelonn.actorengine.utility;
 
+import me.nelonn.bestvecs.MutVec3d;
 import me.nelonn.bestvecs.Vec3d;
 import me.nelonn.bestvecs.Vec3f;
 import me.nelonn.flint.path.Key;
@@ -7,6 +8,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Vector3d;
 import org.joml.Vector3f;
 
 public final class Adapter {
@@ -24,9 +26,21 @@ public final class Adapter {
     }
 
     @Contract("null -> null; !null -> !null")
-    public static @Nullable Vector3f adapt(@Nullable Vec3f vec3f) {
+    public static @Nullable Vector3f toJoml(@Nullable Vec3f vec3f) {
         if (vec3f == null) return null;
         return new Vector3f(vec3f.x(), vec3f.y(), vec3f.z());
+    }
+
+    @Contract("null -> null; !null -> !null")
+    public static @Nullable Vector3d toJoml(@Nullable Vec3d vec3f) {
+        if (vec3f == null) return null;
+        return new Vector3d(vec3f.x(), vec3f.y(), vec3f.z());
+    }
+
+    @Contract("null -> null; !null -> !null")
+    public static @Nullable MutVec3d toMutBV(@Nullable Vector3d vec) {
+        if (vec == null) return null;
+        return new MutVec3d(vec.x(), vec.y(), vec.z());
     }
 
     @Contract("null -> null; !null -> !null")

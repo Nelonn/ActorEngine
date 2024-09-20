@@ -8,7 +8,6 @@ public interface RelativePosition {
 
     Vec3d apply(VariablesMap rootProperties);
 
-    
     static RelativePosition vec(Vec3d vec3d) {
         return (unused) -> vec3d;
     }

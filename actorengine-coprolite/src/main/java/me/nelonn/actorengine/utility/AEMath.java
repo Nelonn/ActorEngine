@@ -1,11 +1,7 @@
 package me.nelonn.actorengine.utility;
 
-import me.nelonn.bestvecs.MutVec3d;
-import me.nelonn.bestvecs.Vec3d;
 import net.minecraft.util.Mth;
-import org.jetbrains.annotations.NotNull;
-import org.joml.Quaternionf;
-import org.joml.Vector3d;
+import org.joml.Vector3f;
 
 public final class AEMath {
 
@@ -13,42 +9,35 @@ public final class AEMath {
     public static final float RADIANS_TO_DEGREES = 180.0F / (float) Math.PI;
 
     public static float normalize90rad(float angle) {
-        return normalize90deg(angle * RADIANS_TO_DEGREES) * DEGREES_TO_RADIANS;
-    }
-
-    public static float normalize90deg(float degrees) {
-        return Mth.clamp(degrees, -90.0F, 90.0F);
+        return normalize90(angle * RADIANS_TO_DEGREES) * DEGREES_TO_RADIANS;
     }
 
     public static float normalize360rad(float angle) {
-        return normalizeAxis(angle * RADIANS_TO_DEGREES) * DEGREES_TO_RADIANS;
+        return normalize360(angle * RADIANS_TO_DEGREES) * DEGREES_TO_RADIANS;
     }
 
-    public static float normalizeAxis(float degrees) {
-        degrees %= 360.0F;
-        if (degrees >= 180.0F) {
-            degrees -= 360.0F;
-        } else if (degrees < -180.0F) {
-            degrees += 360.0F;
+    public static float normalize360(float deg) {
+        while (deg < -180) {
+            deg += 360;
         }
-        return degrees;
+        while (deg > 180) {
+            deg -= 360;
+        }
+        return deg;
     }
 
-    public static MutVec3d rotateVector2D(float pitch, float yaw) {
-        float f2 = pitch * 0.017453292F;
-        float f3 = -yaw * 0.017453292F;
+    public static float normalize90(float deg) {
+        return Mth.clamp(deg, -90, 90);
+    }
+
+    public static Vector3f rotateVector2D(float pitch, float yaw) {
+        float f2 = pitch * DEGREES_TO_RADIANS;
+        float f3 = -yaw * DEGREES_TO_RADIANS;
         float f4 = Mth.cos(f3);
         float f5 = Mth.sin(f3);
         float f6 = Mth.cos(f2);
         float f7 = Mth.sin(f2);
-        return new MutVec3d(f5 * f6, -f7, f4 * f6);
-    }
-
-    public static MutVec3d rotateVector(Vec3d coordinates, Quaternionf quaternion) {
-        MutVec3d coords = coordinates instanceof MutVec3d mutVec3d ? mutVec3d : coordinates.mutableCopy();
-        Vector3d vec = new Vector3d(coords.x(), coords.y(), coords.z());
-        quaternion.transform(vec);
-        return coords.with(vec.x(), vec.y(), vec.z());
+        return new Vector3f(f5 * f6, -f7, f4 * f6);
     }
 
     public static float delta(double current, double min, double max) {

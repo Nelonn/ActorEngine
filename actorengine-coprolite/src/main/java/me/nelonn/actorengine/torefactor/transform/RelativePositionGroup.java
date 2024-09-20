@@ -3,7 +3,6 @@ package me.nelonn.actorengine.torefactor.transform;
 import me.nelonn.actorengine.torefactor.variable.VariablesMap;
 import me.nelonn.bestvecs.MutVec3d;
 import me.nelonn.bestvecs.Vec3d;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
 import java.util.List;
