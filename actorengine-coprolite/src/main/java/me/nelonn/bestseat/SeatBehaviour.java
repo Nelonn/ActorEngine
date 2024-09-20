@@ -26,9 +26,8 @@ public class SeatBehaviour implements Seat {
         this.handle = handle;
     }
 
-    @Nullable
     @Override
-    public Entity getPassenger(int position) {
+    public @Nullable Entity getPassenger(int position) {
         return positionedPassengers.get(position);
     }
 
@@ -91,9 +90,8 @@ public class SeatBehaviour implements Seat {
         return isAllPreventDismount() || perPlayerDismount.containsKey(playerId);
     }
 
-    @Nullable
     @Override
-    public DismountLocationGetter getDismountLocationGetter() {
+    public @Nullable DismountLocationGetter getDismountLocationGetter() {
         return this.dismountLocationGetter;
     }
 
@@ -102,9 +100,8 @@ public class SeatBehaviour implements Seat {
         this.dismountLocationGetter = dismountLocationGetter;
     }
 
-    @Nullable
     @Override
-    public EventListener getEventListener() {
+    public @Nullable EventListener getEventListener() {
         return this.eventListener;
     }
 
@@ -113,9 +110,8 @@ public class SeatBehaviour implements Seat {
         this.eventListener = eventListener;
     }
 
-    @Nullable
     @Override
-    public Runnable getTickListener() {
+    public @Nullable Runnable getTickListener() {
         return this.tickListener;
     }
 

@@ -1,4 +1,4 @@
-package me.nelonn.actorengine.component.model;
+package me.nelonn.actorengine.model;
 
 import com.mojang.math.Transformation;
 import me.nelonn.actorengine.component.EntityComponent;
@@ -9,6 +9,8 @@ import me.nelonn.actorengine.torefactor.rotation.Rotation2d;
 import me.nelonn.actorengine.torefactor.transform.Property;
 import me.nelonn.actorengine.torefactor.transform.Transform;
 import me.nelonn.actorengine.utility.Adapter;
+import me.nelonn.bestseat.Seat;
+import me.nelonn.bestseat.SeatLike;
 import me.nelonn.bestvecs.ImmVec3d;
 import me.nelonn.bestvecs.Vec3f;
 import me.nelonn.flint.path.Key;
@@ -27,7 +29,7 @@ import org.joml.Quaternionf;
 
 import java.util.Set;
 
-public class ModelDisplayComponent extends EntityComponent {
+public class ModelDisplayComponent extends EntityComponent implements SeatLike {
     public static class ModelBuilder {
         private Item item;
         private Path model;
@@ -150,5 +152,10 @@ public class ModelDisplayComponent extends EntityComponent {
     @Override
     public Set<Property<?>> getSupportedProperties() {
         return SUPPORTED_PROPERTIES;
+    }
+
+    @Override
+    public Seat asSeat() {
+        return getEntity().asSeat();
     }
 }
