@@ -102,7 +102,7 @@ public class RootEntity extends Entity implements RootLike, SetRemovedHandler {
         try {
             result = super.save(nbt);
         } catch (Throwable e) {
-            actorEngine.getLogger().error("Failed to save '" + this.getEncodeId() + "'", e);
+            actorEngine.getLogger().error("Failed to save {}", fmtIdentityForLogging(), e);
         }
         return result;
     }
@@ -126,21 +126,21 @@ public class RootEntity extends Entity implements RootLike, SetRemovedHandler {
         try {
             String typeString = nbt.getString(ActorEngine.ID + ".ActorType");
             if (typeString.isEmpty()) {
-                actorEngine.getLogger().warn(String.format("Removed actor with empty type identifier [x=%.2f, y=%.2f, z=%.2f]", getX(), getY(), getZ()));
+                actorEngine.getLogger().warn("Removed actor with empty type identifier {}", fmtCoordsForLogging());
                 setRemoved(RemovalReason.DISCARDED);
                 return;
             }
             typeString = typeString.toLowerCase(Locale.ENGLISH);
             Key typeId = Key.tryOrNull(typeString);
             if (typeId == null) {
-                actorEngine.getLogger().warn(String.format("Removed actor with invalid type identifier '%s' [x=%.2f, y=%.2f, z=%.2f]", typeString, getX(), getY(), getZ()));
+                actorEngine.getLogger().warn("Removed actor with invalid type identifier '{}' {}", typeString, fmtCoordsForLogging());
                 setRemoved(RemovalReason.DISCARDED);
                 return;
             }
             ActorType<?> actorType = actorEngine.actors().get(typeId);
             if (actorType == null) {
                 if (actorEngine.isRemoveActorsOfANonexistentType()) {
-                    actorEngine.getLogger().debug(String.format("Removed actor with non existent type '%s' [x=%.2f, y=%.2f, z=%.2f]", typeId, getX(), getY(), getZ()));
+                    actorEngine.getLogger().debug("Removed actor with non existent type '{}' {}", typeId, fmtCoordsForLogging());
                     setRemoved(RemovalReason.DISCARDED);
                 } else {
                     this.savedNbt = nbt;
@@ -151,15 +151,27 @@ public class RootEntity extends Entity implements RootLike, SetRemovedHandler {
             this.actor.assemble(nbt.getCompound(ActorEngine.ID + ".ActorData"));
         } catch (Throwable e) {
             savedNbt = nbt;
-            actorEngine.getLogger().warn(String.format("Failed to load '%s' [x=%.2f, y=%.2f, z=%.2f]", getEncodeId(), getX(), getY(), getZ()), e);
+            actorEngine.getLogger().error("Failed to load {}", fmtIdentityForLogging(), e);
         }
     }
 
     @Override
     public void tick() {
         if (this.actor != null) {
-            this.actor.tick();
+            try {
+                this.actor.tick();
+            } catch (Throwable e) {
+                actorEngine.getLogger().error("Failed to tick {}", fmtIdentityForLogging(), e);
+            }
         }
+    }
+
+    public String fmtIdentityForLogging() {
+        return "'" + getEncodeId() + "' " + fmtCoordsForLogging();
+    }
+
+    public String fmtCoordsForLogging() {
+        return String.format("[x=%.2f, y=%.2f, z=%.2f]", getX(), getY(), getZ());
     }
 
     /**
