@@ -12,6 +12,7 @@ import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.OverridingMethodsMustInvokeSuper;
 import java.util.*;
+import java.util.stream.Stream;
 
 public class Actor {
     private final ActorType<?> type;
@@ -131,9 +132,13 @@ public class Actor {
         return components.containsKey(name.toLowerCase(Locale.ENGLISH));
     }
 
-    public <T extends AComponent> boolean hasComponent(String name, Class<T> type) {
+    public <T> boolean hasComponent(String name, Class<T> type) {
         AComponent component = components.get(name.toLowerCase(Locale.ENGLISH));
         return component != null && type.isAssignableFrom(component.getClass());
+    }
+
+    public <T> boolean hasComponent(Class<T> type) {
+        return getAllComponents().stream().anyMatch(component -> type.isAssignableFrom(component.getClass()));
     }
 
     public @Nullable AComponent removeComponent(String name) {
@@ -173,11 +178,14 @@ public class Actor {
         return type.cast(component);
     }
 
-    public <T> Collection<T> getComponents(Class<T> type) {
+    public <T> Stream<T> streamComponents(Class<T> type) {
         return getAllComponents().stream()
                 .filter(component -> type.isAssignableFrom(component.getClass()))
-                .map(type::cast)
-                .toList();
+                .map(type::cast);
+    }
+
+    public <T> Collection<T> getComponents(Class<T> type) {
+        return streamComponents(type).toList();
     }
 
     public Collection<AComponent> getAllComponents() {
