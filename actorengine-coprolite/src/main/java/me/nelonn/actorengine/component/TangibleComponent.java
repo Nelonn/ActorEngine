@@ -31,6 +31,10 @@ public abstract class TangibleComponent extends AComponent {
         if (transformPosition != null) {
             pos.add(transformPosition);
         }
+        if (Double.isNaN(pos.x()) || Double.isNaN(pos.y()) || Double.isNaN(pos.z())) {
+            getActor().getRoot().getActorEngine().getLogger().error("Got NaN when composing '{}'", getName());
+            return;
+        }
         moveTo(pos.x(), pos.y(), pos.z());
     }
 

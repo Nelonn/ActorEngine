@@ -69,6 +69,10 @@ public class Actor {
      */
     @OverridingMethodsMustInvokeSuper
     public void moveTo(double x, double y, double z) {
+        if (Double.isNaN(x) || Double.isNaN(y) || Double.isNaN(z)) {
+            getRoot().getActorEngine().getLogger().error("Exception", new RuntimeException("Got NaN on Actor::moveTo()"));
+            return;
+        }
         ((Entity) root.asEntity()).moveTo(x, y, z);
         compose();
     }
