@@ -4,9 +4,9 @@ import me.nelonn.actorengine.api.ActorPart;
 import me.nelonn.actorengine.api.Root;
 import me.nelonn.actorengine.api.actor.Actor;
 import me.nelonn.actorengine.utility.EntityRootAccessor;
+import net.minecraft.world.entity.Entity;
 
 import javax.annotation.Nullable;
-import javax.swing.text.html.parser.Entity;
 
 public final class RootEntity {
 
@@ -15,7 +15,7 @@ public final class RootEntity {
     }
 
     public static @Nullable Root getAsRoot(Entity entity) {
-        return ((EntityRootAccessor) (Object) entity).actorEngine$getRootHandle();
+        return ((EntityRootAccessor) entity).actorEngine$getRootHandle();
     }
 
     public static @Nullable Actor getActor(Entity entity) {
