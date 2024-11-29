@@ -15,9 +15,9 @@ public interface Root extends RootLike {
      */
     Entity asEntity();
 
+
     // Root specific methods
 
-    
     ActorEngine getActorEngine();
 
     Level level();

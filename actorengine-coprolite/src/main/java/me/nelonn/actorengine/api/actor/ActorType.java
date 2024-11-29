@@ -2,10 +2,12 @@ package me.nelonn.actorengine.api.actor;
 
 import me.nelonn.actorengine.api.ActorEngine;
 import me.nelonn.actorengine.api.Root;
-import me.nelonn.actorengine.entity.RootEntity;
+import me.nelonn.actorengine.utility.RootHandle;
+import me.nelonn.actorengine.utility.EntityRootAccessor;
 import me.nelonn.flint.path.Key;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.Marker;
 import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.NotNull;
 
 public class ActorType<T extends Actor> {
     private final ActorFactory<T> factory;
@@ -20,10 +22,12 @@ public class ActorType<T extends Actor> {
     }
 
     public T spawn(Level world) {
-        RootEntity root = new RootEntity(world);
-        world.addFreshEntity(root);
-        T actor = create(root.asRoot());
-        root.setOwner(actor);
+        Marker marker = new Marker(EntityType.MARKER, world);
+        RootHandle rootHandle = new RootHandle(marker);
+        ((EntityRootAccessor) (Object) marker).actorEngine$setRootHandle(rootHandle);
+        world.addFreshEntity(marker);
+        T actor = create(rootHandle.asRoot());
+        rootHandle.setActor(actor);
         actor.assemble(null);
         return actor;
     }

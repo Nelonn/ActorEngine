@@ -153,7 +153,6 @@ public class Actor {
         return components.get(name.toLowerCase(Locale.ENGLISH));
     }
 
-    // maybe <T extends AComponent>? I'm more comfortable without
     public <T> @Nullable T getComponentNullable(String name, Class<T> type) {
         AComponent component = components.get(name.toLowerCase(Locale.ENGLISH));
         if (component == null || !type.isAssignableFrom(component.getClass())) return null;
@@ -169,7 +168,6 @@ public class Actor {
         return component;
     }
 
-    // maybe <T extends AComponent>? I'm more comfortable without
     public <T> T getComponent(String name, Class<T> type) {
         name = name.toLowerCase(Locale.ENGLISH);
         AComponent component = components.get(name);
