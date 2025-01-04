@@ -15,14 +15,12 @@ import me.nelonn.bestvecs.ImmVec3d;
 import me.nelonn.bestvecs.Vec3f;
 import me.nelonn.flint.path.Key;
 import me.nelonn.flint.path.Path;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Display;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Quaternionf;
@@ -39,7 +37,7 @@ public class ModelDisplayComponent extends EntityComponent implements SeatLike {
         }
 
         public ModelBuilder(Key itemId) {
-            this(BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath(itemId.namespace(), itemId.value())));
+            this(BuiltInRegistries.ITEM.get(new ResourceLocation(itemId.namespace(), itemId.value())));
         }
 
         public ModelBuilder model(Path model) {
@@ -49,9 +47,7 @@ public class ModelDisplayComponent extends EntityComponent implements SeatLike {
 
         public ItemStack build() {
             ItemStack itemStack = new ItemStack(item);
-            CustomData.update(DataComponents.CUSTOM_DATA, itemStack, nbt -> {
-                nbt.putString("CustomModel", model.toString());
-            });
+            itemStack.getOrCreateTag().putString("model", model.toString());
             return itemStack;
         }
     }

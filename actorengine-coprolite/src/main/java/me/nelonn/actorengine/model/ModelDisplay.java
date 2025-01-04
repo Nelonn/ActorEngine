@@ -25,7 +25,7 @@ public class ModelDisplay extends Display.ItemDisplay implements ActorPart, Seat
     }
 
     @Override
-    public boolean canChangeDimensions(Level from, Level to) {
+    public boolean canChangeDimensions(/*Level from, Level to*/) {
         return false;
     }
 

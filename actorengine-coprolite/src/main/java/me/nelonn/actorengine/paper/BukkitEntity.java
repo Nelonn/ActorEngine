@@ -1,8 +1,8 @@
 package me.nelonn.actorengine.paper;
 
 import net.minecraft.world.entity.Entity;
-import org.bukkit.craftbukkit.CraftServer;
-import org.bukkit.craftbukkit.entity.CraftEntity;
+import org.bukkit.craftbukkit.v1_20_R3.CraftServer;
+import org.bukkit.craftbukkit.v1_20_R3.entity.CraftEntity;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.function.BiFunction;

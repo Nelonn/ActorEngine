@@ -13,8 +13,8 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.level.Level;
-import org.bukkit.craftbukkit.entity.CraftArmorStand;
-import org.bukkit.craftbukkit.entity.CraftEntity;
+import org.bukkit.craftbukkit.v1_20_R3.entity.CraftArmorStand;
+import org.bukkit.craftbukkit.v1_20_R3.entity.CraftEntity;
 import org.jetbrains.annotations.Nullable;
 
 import static java.util.Objects.requireNonNull;
@@ -58,8 +58,8 @@ public class ArmorStandSeat extends ArmorStand implements SeatLike {
 
     @Override
     @Nullable
-    public AttributeInstance getAttribute(Holder<Attribute> attribute) {
-        return AttributeAccessor.getAttribute(this, attribute.value(), ArmorStandSeat::createAttributes);
+    public AttributeInstance getAttribute(Attribute attribute) {
+        return AttributeAccessor.getAttribute(this, attribute, ArmorStandSeat::createAttributes);
     }
 
     @Override
@@ -118,7 +118,7 @@ public class ArmorStandSeat extends ArmorStand implements SeatLike {
     }
 
     @Override
-    public boolean canChangeDimensions(Level from, Level to) {
+    public boolean canChangeDimensions(/*Level from, Level to*/) {
         return false;
     }
 
