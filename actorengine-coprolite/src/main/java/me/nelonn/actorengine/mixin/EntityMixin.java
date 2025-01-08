@@ -61,8 +61,8 @@ public abstract class EntityMixin implements ActorPart, EntityRootAccessor {
         }
     }
 
-    @Inject(method = "saveWithoutId(Lnet/minecraft/nbt/CompoundTag;Z)Lnet/minecraft/nbt/CompoundTag;", at = @At("TAIL"))
-    private void inject_saveWithoutId(CompoundTag nbt, boolean includeAll, CallbackInfoReturnable<CompoundTag> cir) {
+    @Inject(method = "saveWithoutId(Lnet/minecraft/nbt/CompoundTag;ZZZ)Lnet/minecraft/nbt/CompoundTag;", at = @At("TAIL"))
+    private void inject_saveWithoutId(CompoundTag nbt, boolean includeAll, boolean includeNonSaveable, boolean forceSerialization, CallbackInfoReturnable<CompoundTag> cir) {
         if (actorEngine$rootHandle == null) return;
         if (actorEngine$rootHandle.getRecoveryData() != null) {
             nbt.put(ActorEngine.ID, actorEngine$rootHandle.getRecoveryData());
