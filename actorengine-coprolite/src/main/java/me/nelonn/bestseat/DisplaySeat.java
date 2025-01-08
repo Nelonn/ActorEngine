@@ -80,11 +80,6 @@ public class DisplaySeat extends Display.ItemDisplay implements SeatLike {
     }
 
     @Override
-    public boolean canChangeDimensions(Level from, Level to) {
-        return false;
-    }
-
-    @Override
     public boolean dismountsUnderwater() {
         return false;
     }

@@ -25,11 +25,6 @@ public class ModelDisplay extends Display.ItemDisplay implements ActorPart, Seat
     }
 
     @Override
-    public boolean canChangeDimensions(Level from, Level to) {
-        return false;
-    }
-
-    @Override
     public boolean dismountsUnderwater() {
         return false;
     }

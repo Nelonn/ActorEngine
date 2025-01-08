@@ -118,11 +118,6 @@ public class ArmorStandSeat extends ArmorStand implements SeatLike {
     }
 
     @Override
-    public boolean canChangeDimensions(Level from, Level to) {
-        return false;
-    }
-
-    @Override
     public boolean isAffectedByFluids() {
         return false;
     }

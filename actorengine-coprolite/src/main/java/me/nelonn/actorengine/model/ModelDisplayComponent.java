@@ -39,7 +39,7 @@ public class ModelDisplayComponent extends EntityComponent implements SeatLike {
         }
 
         public ModelBuilder(Key itemId) {
-            this(BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath(itemId.namespace(), itemId.value())));
+            this(BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath(itemId.namespace(), itemId.value())).orElseThrow().value());
         }
 
         public ModelBuilder model(Path model) {
