@@ -1,5 +1,6 @@
 package me.nelonn.bestseat;
 
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
@@ -78,12 +79,31 @@ public class DriverInput {
     @Contract("null, _ -> null; !null, _ -> !null")
     public static @Nullable DriverInput obtain(@Nullable LivingEntity livingEntity, boolean down) {
         if (livingEntity == null) return null;
-        DriverInput.Direction forward = -livingEntity.zza > 0 ? DriverInput.Direction.NEGATIVE :
-                -livingEntity.zza < 0 ? DriverInput.Direction.POSITIVE :
-                        DriverInput.Direction.ZERO;
-        DriverInput.Direction side = livingEntity.xxa > 0 ? DriverInput.Direction.NEGATIVE :
-                livingEntity.xxa < 0 ? DriverInput.Direction.POSITIVE :
-                        DriverInput.Direction.ZERO;
+        DriverInput.Direction forward;
+        DriverInput.Direction side;
+        if (livingEntity instanceof ServerPlayer player) {
+            if (player.getLastClientInput().forward() && !player.getLastClientInput().backward()) {
+                forward = Direction.POSITIVE;
+            } else if (!player.getLastClientInput().forward() && player.getLastClientInput().backward()) {
+                forward = Direction.NEGATIVE;
+            } else {
+                forward = Direction.ZERO;
+            }
+            if (player.getLastClientInput().left() && !player.getLastClientInput().right()) {
+                side = Direction.NEGATIVE;
+            } else if (!player.getLastClientInput().left() && player.getLastClientInput().right()) {
+                side = Direction.POSITIVE;
+            } else {
+                side = Direction.ZERO;
+            }
+        } else {
+            forward = -livingEntity.zza > 0 ? DriverInput.Direction.NEGATIVE :
+                    -livingEntity.zza < 0 ? DriverInput.Direction.POSITIVE :
+                            DriverInput.Direction.ZERO;
+            side = livingEntity.xxa > 0 ? DriverInput.Direction.NEGATIVE :
+                    livingEntity.xxa < 0 ? DriverInput.Direction.POSITIVE :
+                            DriverInput.Direction.ZERO;
+        }
         return new DriverInput(forward, side, livingEntity.jumping, down);
     }
 
